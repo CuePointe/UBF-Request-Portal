@@ -91,7 +91,7 @@ function showView(viewName) {
       if (!res.ok) throw new Error(`Could not locate ${viewName}.html file layout template.`);
       return res.text();
     })
-    .then(html => {
+        .then(html => {
       container.innerHTML = html;
       
       if (viewName === "dashboard") {
@@ -101,8 +101,11 @@ function showView(viewName) {
         if (displayField) displayField.textContent = APP_STATE.userEmail;
         const logo = document.getElementById("ubfLogoForm");
         if (logo) logo.src = "logo.png";
+      } else if (viewName === "history") {
+        loadHistoryView(); // <--- ADD THIS LINE HERE
       }
     })
+
     .catch(err => {
       console.error("Navigation error:", err);
       container.innerHTML = `<div class="alert alert-danger">Error loading view layer resource assets. Make sure files are named in all-lowercase.</div>`;
