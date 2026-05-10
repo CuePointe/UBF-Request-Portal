@@ -291,3 +291,34 @@ function filterTable(val) {
     tr.style.display = tr.innerText.toLowerCase().includes(txt) ? "" : "none";
   });
 }
+// ── PERSONAL HISTORY INTERFACE ENGINE ──
+function loadHistoryView() {
+  const tbody = document.getElementById("historyTableBody");
+  if (!tbody) return;
+
+  // Filter out only the records submitted by the logged-in user
+  const personalRecords = APP_STATE.records.filter(row => 
+    (row.requestedBy || "").toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim()
+  );
+
+  if (personalRecords.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">You haven't submitted any procurement requests yet.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = "";
+  personalRecords.forEach(item => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="fw-bold text-primary">${item.requestId}</td>
+      <td>${item.dateRequest}</td>
+      <td><span class="badge bg-light text-dark">${item.activityCode}</span></td>
+      <td>${item.description}</td>
+      <td>${item.quantity}</td>
+      <td>${statusBadgeHtml(item.adminStatus)}</td>
+      <td>${statusBadgeHtml(item.famStatus)}</td>
+      <td>${statusBadgeHtml(item.edStatus)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
