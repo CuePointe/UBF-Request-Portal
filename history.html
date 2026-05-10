@@ -1,0 +1,32 @@
+<!-- history.html -->
+<div class="card border-0 shadow-sm ubf-table-card">
+  <div class="card-header ubf-card-header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-2">
+      <i class="bi bi-clock-history fs-5"></i>
+      <span class="fw-semibold">My Submission History</span>
+    </div>
+    <span class="badge ubf-badge-outline text-white-50">Personal Queue</span>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover ubf-data-table mb-0" id="historyTable">
+        <thead>
+          <tr>
+            <th>Req ID</th>
+            <th>Date Requested</th>
+            <th>Activity Code</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Admin Status</th>
+            <th>FAM Status</th>
+            <th>ED Status</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody">
+          <!-- History records will be rendered here dynamically via javascript -->
+          <tr><td colspan="8" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Loading your history...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
