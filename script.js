@@ -79,14 +79,14 @@ function resolveUserPermissions() {
   if (emailLabel) emailLabel.textContent = APP_STATE.userEmail;
 }
 
-// ── CORE VIEW ROUTER (With Cache Buster Upgrade) ──
+// ── CORE VIEW ROUTER ──
 function showView(viewName) {
   const container = document.getElementById("mainContentContainer");
   if (!container) return;
 
   document.querySelectorAll(".ubf-nav-link").forEach(lnk => lnk.classList.remove("active"));
 
-  // The timestamp string parameter tells GitHub Pages servers to serve fresh files instead of old cached assets
+  // Appended runtime timestamp prevents GitHub Pages file caching glitches
   fetch(`${viewName}.html?_=${Date.now()}`)
     .then(res => {
       if (!res.ok) throw new Error(`Could not locate ${viewName}.html file layout template.`);
@@ -132,7 +132,7 @@ async function loadDashboard() {
       allRows = JSON.parse(decoded);
     }
 
-    // Calls your data.js logic engine to process arrays
+    // Calls data.js calculation rules to populate memory states
     APP_STATE.records = data_getDashboard(allRows, APP_STATE.userRole, APP_STATE.userEmail, APP_STATE.showAllData);
     renderDashboardUI();
   } catch (err) {
@@ -224,7 +224,7 @@ async function handleFormSubmit() {
 
   try {
     const fetchUrl = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}`;
-    const getRes = await fetch(`${fetchUrl}?_=${Date.now()}`, { headers: { "Authorization": `token ${APP_STATE.githubToken}` }});
+    const getRes = await fetch(fetchUrl, { headers: { "Authorization": `token ${APP_STATE.githubToken}` }});
     
     let dbContent = [];
     let currentSha = null;
