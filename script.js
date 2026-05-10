@@ -79,19 +79,20 @@ function resolveUserPermissions() {
   if (emailLabel) emailLabel.textContent = APP_STATE.userEmail;
 }
 
-// ── CORE VIEW ROUTER ──
+// ── CORE VIEW ROUTER (With Cache Buster Upgrade) ──
 function showView(viewName) {
   const container = document.getElementById("mainContentContainer");
   if (!container) return;
 
   document.querySelectorAll(".ubf-nav-link").forEach(lnk => lnk.classList.remove("active"));
 
-  fetch(`${viewName}.html`)
+  // The timestamp string parameter tells GitHub Pages servers to serve fresh files instead of old cached assets
+  fetch(`${viewName}.html?_=${Date.now()}`)
     .then(res => {
       if (!res.ok) throw new Error(`Could not locate ${viewName}.html file layout template.`);
       return res.text();
     })
-        .then(html => {
+    .then(html => {
       container.innerHTML = html;
       
       if (viewName === "dashboard") {
@@ -102,10 +103,9 @@ function showView(viewName) {
         const logo = document.getElementById("ubfLogoForm");
         if (logo) logo.src = "logo.png";
       } else if (viewName === "history") {
-        loadHistoryView(); // <--- ADD THIS LINE HERE
+        loadHistoryView();
       }
     })
-
     .catch(err => {
       console.error("Navigation error:", err);
       container.innerHTML = `<div class="alert alert-danger">Error loading view layer resource assets. Make sure files are named in all-lowercase.</div>`;
@@ -117,7 +117,7 @@ async function loadDashboard() {
   const tbody = document.getElementById("dashTableBody");
   if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Accessing GitHub ledger database records...</td></tr>`;
 
-  const url = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}`;
+  const url = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}?_=${Date.now()}`;
 
   try {
     const response = await fetch(url, {
@@ -223,9 +223,8 @@ async function handleFormSubmit() {
   };
 
   try {
-    // 1. Fetch current database array
     const fetchUrl = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}`;
-    const getRes = await fetch(fetchUrl, { headers: { "Authorization": `token ${APP_STATE.githubToken}` }});
+    const getRes = await fetch(`${fetchUrl}?_=${Date.now()}`, { headers: { "Authorization": `token ${APP_STATE.githubToken}` }});
     
     let dbContent = [];
     let currentSha = null;
@@ -235,11 +234,9 @@ async function handleFormSubmit() {
       dbContent = JSON.parse(decodeURIComponent(escape(atob(data.content))));
     }
 
-    // 2. Format database record via data.js helper
     const structuredRecord = data_create(fd, APP_STATE.userEmail);
     dbContent.push(structuredRecord);
 
-    // 3. Commit new snapshot array straight to repository files
     const writeResponse = await fetch(fetchUrl, {
       method: "PUT",
       headers: { "Authorization": `token ${APP_STATE.githubToken}`, "Content-Type": "application/json" },
@@ -285,18 +282,11 @@ async function openDetailsModal(requestId) {
   `;
 }
 
-function filterTable(val) {
-  const txt = val.toLowerCase().trim();
-  document.querySelectorAll("#dashTableBody tr").forEach(tr => {
-    tr.style.display = tr.innerText.toLowerCase().includes(txt) ? "" : "none";
-  });
-}
 // ── PERSONAL HISTORY INTERFACE ENGINE ──
 function loadHistoryView() {
   const tbody = document.getElementById("historyTableBody");
   if (!tbody) return;
 
-  // Filter out only the records submitted by the logged-in user
   const personalRecords = APP_STATE.records.filter(row => 
     (row.requestedBy || "").toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim()
   );
@@ -320,5 +310,12 @@ function loadHistoryView() {
       <td>${statusBadgeHtml(item.edStatus)}</td>
     `;
     tbody.appendChild(tr);
+  });
+}
+
+function filterTable(val) {
+  const txt = val.toLowerCase().trim();
+  document.querySelectorAll("#dashTableBody tr").forEach(tr => {
+    tr.style.display = tr.innerText.toLowerCase().includes(txt) ? "" : "none";
   });
 }
