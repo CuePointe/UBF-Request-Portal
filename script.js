@@ -13,8 +13,8 @@ var APP_STATE = {
 };
 
 const CONFIG = {
-  GITHUB_OWNER: "YOUR_GITHUB_USERNAME_OR_ORG", // Change this
-  GITHUB_REPO : "YOUR_REPOSITORY_NAME",         // Change this
+  GITHUB_OWNER: "CuePointe", // Change this
+  GITHUB_REPO : "UBF_Request_Portal",         // Change this
   DATABASE_FILE: "data/requisitions.json",
   ROLES_CONFIG: {
     "s.abonyo@ugandabiodiversityfund.org"  : "Admin Officer",
