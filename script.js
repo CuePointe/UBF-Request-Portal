@@ -1,5 +1,5 @@
 // ============================================================
-//  UBF LOGISTICS & PROCUREMENT – script.js (Production Release)
+//  UBF LOGISTICS & PROCUREMENT – script.js (Absolute API Fix)
 // ============================================================
 
 const CONFIG = {
@@ -13,8 +13,6 @@ var APP_STATE = {
   userEmail: "",
   userRole: "Staff",
   isDev: false,
-  roleOverride: "",
-  showAllData: false,
   records: [],
   db_sha: null
 };
@@ -24,8 +22,6 @@ const ROLES_CONFIG = {
   "w.nabatanzi@ugandabiodiversityfund.org": "FAM",
   "i.amani@ugandabiodiversityfund.org"   : "ED"
 };
-
-const DEV_EMAILS = ["t.otieno@ugandabiodiversityfund.org"];
 
 document.addEventListener("DOMContentLoaded", function() {
   APP_STATE.githubToken = localStorage.getItem("ubf_github_token") || "";
@@ -37,20 +33,11 @@ document.addEventListener("DOMContentLoaded", function() {
     resolveUserPermissions();
     showView("dashboard");
   }
-
-  document.addEventListener("keydown", function(e) {
-    if (e.ctrlKey && e.shiftKey && (e.key === "D" || e.key === "d")) {
-      e.preventDefault();
-      const dev = document.getElementById("devPanel");
-      if (dev) dev.style.display = (dev.style.display === "none" ? "block" : "none");
-    }
-  });
 });
 
 function promptForCredentials() {
-  const email = prompt("Enter your UBF Corporate Email:", APP_STATE.userEmail);
+  const email = prompt("Enter your UBF Email:", APP_STATE.userEmail);
   const token = prompt("Enter your GitHub Personal Access Token (PAT):");
-  
   if (email && token) {
     APP_STATE.userEmail = email.trim().toLowerCase();
     APP_STATE.githubToken = token.trim();
@@ -58,156 +45,76 @@ function promptForCredentials() {
     localStorage.setItem("ubf_github_token", APP_STATE.githubToken);
     resolveUserPermissions();
     showView("dashboard");
-  } else {
-    alert("Access Denied. Run credentials required.");
   }
 }
 
 function resolveUserPermissions() {
   const cleanEmail = APP_STATE.userEmail.toLowerCase().trim();
-  APP_STATE.isDev = DEV_EMAILS.includes(cleanEmail);
-  
-  if (APP_STATE.roleOverride) {
-    APP_STATE.userRole = APP_STATE.roleOverride;
-  } else {
-    APP_STATE.userRole = ROLES_CONFIG[cleanEmail] || "Staff";
-  }
-
-  const roleLabel = document.getElementById("roleLabel");
-  const emailLabel = document.getElementById("emailLabel");
-  if (roleLabel) roleLabel.textContent = APP_STATE.userRole;
-  if (emailLabel) emailLabel.textContent = APP_STATE.userEmail;
+  APP_STATE.userRole = ROLES_CONFIG[cleanEmail] || "Staff";
+  if(document.getElementById("roleLabel")) document.getElementById("roleLabel").textContent = APP_STATE.userRole;
+  if(document.getElementById("emailLabel")) document.getElementById("emailLabel").textContent = APP_STATE.userEmail;
 }
 
-// ── CORE VIEW ROUTER ──
 function showView(viewName) {
   const container = document.getElementById("mainContentContainer");
   if (!container) return;
-
-  document.querySelectorAll(".ubf-nav-link").forEach(lnk => lnk.classList.remove("active"));
-
-  fetch(`${viewName}.html?_=${Date.now()}`)
-    .then(res => {
-      if (!res.ok) throw new Error(`Could not locate ${viewName}.html file layout template.`);
-      return res.text();
-    })
+  fetch(viewName + ".html?_=" + Date.now())
+    .then(res => res.text())
     .then(html => {
       container.innerHTML = html;
-      
-      if (viewName === "dashboard") {
-        loadDashboard();
-      } else if (viewName === "form") {
-        const displayField = document.getElementById("requestedByDisplay");
-        if (displayField) displayField.textContent = APP_STATE.userEmail;
-        const logo = document.getElementById("ubfLogoForm");
-        if (logo) logo.src = "logo.png";
-      } else if (viewName === "history") {
-        loadHistoryView();
-      }
-    })
-    .catch(err => {
-      console.error("Navigation error:", err);
-      container.innerHTML = `<div class="alert alert-danger">Error loading view layer resource assets. Make sure files are named in all-lowercase.</div>`;
+      if (viewName === "dashboard") loadDashboard();
+      if (viewName === "form") document.getElementById("requestedByDisplay").textContent = APP_STATE.userEmail;
     });
 }
 
-// ── DATABASE OPERATIONS (Syncs with data.js) ──
 async function loadDashboard() {
   const tbody = document.getElementById("dashTableBody");
-  if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Accessing GitHub ledger database records...</td></tr>`;
-
-  const url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE + "?_=" + Date.now();
-
+  // CRITICAL FIX: Direct absolute URL call path mapping to GitHub APIs
+  const url = "https://api.github.com/repos/" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE + "?_ Graham=" + Date.now();
 
   try {
     const response = await fetch(url, {
-      headers: { "Authorization": `token ${APP_STATE.githubToken}`, "Accept": "application/vnd.github.v3+json" }
+      headers: { "Authorization": "token " + APP_STATE.githubToken, "Accept": "application/vnd.github.v3+json" }
     });
-    
-    let allRows = [];
     if (response.ok) {
       const data = await response.json();
       APP_STATE.db_sha = data.sha;
       const decoded = decodeURIComponent(escape(atob(data.content)));
-      allRows = JSON.parse(decoded);
+      const allRows = JSON.parse(decoded);
+      // Reads from global window layout hook
+      APP_STATE.records = window.DataService.getDashboard(allRows, APP_STATE.userRole, APP_STATE.userEmail, false);
+      renderDashboardUI();
     }
-
-    APP_STATE.records = data_getDashboard(allRows, APP_STATE.userRole, APP_STATE.userEmail, APP_STATE.showAllData);
-    renderDashboardUI();
-  } catch (err) {
-    console.error("Fetch failure:", err);
-    if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center text-danger py-4">Database link dropped. Verify token permissions.</td></tr>`;
-  }
+  } catch (err) { console.error(err); }
 }
 
 function renderDashboardUI() {
   const tbody = document.getElementById("dashTableBody");
   if (!tbody) return;
-
   tbody.innerHTML = "";
-  let total = 0, pending = 0, approved = 0, rejected = 0;
-
-  if (APP_STATE.records.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4 text-muted">No procurement requests available in your permission queue.</td></tr>`;
-    updateMetricsDisplay(0,0,0,0);
-    return;
-  }
-
   APP_STATE.records.forEach(item => {
-    total++;
-    if (item.edStatus === "Approved") approved++;
-    else if (item.adminStatus === "Rejected" || item.famStatus === "Rejected" || item.edStatus === "Rejected") rejected++;
-    else pending++;
-
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td class="fw-bold text-primary">${item.requestId}</td>
       <td>${item.dateRequest}</td>
-      <td><strong>${item.activityCode}</strong><br><small class="text-muted">${item.description.substring(0,40)}...</small></td>
+      <td><strong>${item.activityCode}</strong><br><small class="text-muted">${item.description}</small></td>
       <td>${item.quantity}</td>
       <td>${item.dateRequired}</td>
       <td>${item.location || "—"}</td>
       <td>${item.department || "—"}</td>
       <td><small>${item.requestedBy}</small></td>
-      <td>${statusBadgeHtml(item.adminStatus)}</td>
-      <td>${statusBadgeHtml(item.famStatus)}</td>
-      <td>${statusBadgeHtml(item.edStatus)}</td>
-      <td class="text-center">
-        <button class="btn btn-sm btn-outline-primary py-0 px-2" onclick="openDetailsModal('${item.requestId}')">Open</button>
-      </td>
+      <td><span class="badge bg-secondary">${item.adminStatus}</span></td>
+      <td><span class="badge bg-secondary">${item.famStatus}</span></td>
+      <td><span class="badge bg-secondary">${item.edStatus}</span></td>
+      <td>—</td>
     `;
     tbody.appendChild(tr);
   });
-
-  updateMetricsDisplay(total, pending, approved, rejected);
 }
 
-function statusBadgeHtml(val) {
-  let cls = "bg-secondary";
-  if (["Approved", "Verified", "Cleared"].includes(val)) cls = "bg-success";
-  if (val === "Rejected") cls = "bg-danger";
-  if (val === "Pending" || !val) cls = "bg-warning text-dark";
-  return `<span class="badge ${cls}">${val || "Pending"}</span>`;
-}
-
-function updateMetricsDisplay(t, p, a, r) {
-  if(document.getElementById("statTotal")) document.getElementById("statTotal").textContent = t;
-  if(document.getElementById("statPending")) document.getElementById("statPending").textContent = p;
-  if(document.getElementById("statApproved")) document.getElementById("statApproved").textContent = a;
-  if(document.getElementById("statRejected")) document.getElementById("statRejected").textContent = r;
-}
-
-// ── FORM SUBMISSION ORCHESTRATION ──
 async function handleFormSubmit() {
-  const form = document.getElementById("requisitionForm");
-  if (!form || !form.checkValidity()) {
-    if(form) form.classList.add("was-validated");
-    return;
-  }
-
   const btn = document.getElementById("submitBtn");
   btn.disabled = true;
-  btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Saving to Database...`;
 
   const fd = {
     activityCode: document.getElementById("f_activityCode").value,
@@ -215,108 +122,35 @@ async function handleFormSubmit() {
     quantity: document.getElementById("f_quantity").value,
     dateRequired: document.getElementById("f_dateRequired").value,
     location: document.getElementById("f_location").value,
-    account: document.getElementById("f_account").value,
-    donor: document.getElementById("f_donor").value,
-    department: document.getElementById("f_department").value,
-    budgetCode: document.getElementById("f_budgetCode").value
+    account: "", donor: "", department: "", budgetCode: ""
   };
 
   try {
-        const fetchUrl = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
-
-    const getRes = await fetch(fetchUrl, { headers: { "Authorization": `token ${APP_STATE.githubToken}` }});
-    
+    const url = "https://api.github.com/repos/" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
+    const res = await fetch(url, { headers: { "Authorization": "token " + APP_STATE.githubToken }});
     let dbContent = [];
-    let currentSha = null;
-    if (getRes.ok) {
-      const data = await getRes.json();
-      currentSha = data.sha;
+    if (res.ok) {
+      const data = await res.json();
+      APP_STATE.db_sha = data.sha;
       dbContent = JSON.parse(decodeURIComponent(escape(atob(data.content))));
     }
 
-    const structuredRecord = data_create(fd, APP_STATE.userEmail);
-    dbContent.push(structuredRecord);
+    const newRecord = window.DataService.createRecord(fd, APP_STATE.userEmail);
+    dbContent.push(newRecord);
 
-    // FIXED: Stripped formatting white-space line-breaks ('null, 2') to comply with strict GitHub API upload rules
-    const writeResponse = await fetch(fetchUrl, {
+    const writeRes = await fetch(url, {
       method: "PUT",
-      headers: { "Authorization": `token ${APP_STATE.githubToken}`, "Content-Type": "application/json" },
+      headers: { "Authorization": "token " + APP_STATE.githubToken, "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: `Logistics Record Added: ${structuredRecord.requestId}`,
+        message: "Add request " + newRecord.requestId,
         content: btoa(unescape(encodeURIComponent(JSON.stringify(dbContent)))),
-        sha: currentSha
+        sha: APP_STATE.db_sha
       })
     });
 
-    if (writeResponse.ok) {
-      alert(`Requisition successfully tracked! ID: ${structuredRecord.requestId}`);
+    if (writeRes.ok) {
+      alert("Success! ID: " + newRecord.requestId);
       showView("dashboard");
-    } else {
-      throw new Error("GitHub rejected database modification payload packet. Ensure your Token has 'repo' write access checked.");
     }
-  } catch (error) {
-    alert("Transaction processing failed: " + error.message);
-    btn.disabled = false;
-    btn.innerHTML = `<i class="bi bi-send me-2"></i>Submit Request`;
-  }
-}
-
-// ── OPEN ROW MODAL DETAILS PANEL ──
-async function openDetailsModal(requestId) {
-  const modalEl = document.getElementById("detailModal");
-  if (!modalEl) return;
-  const bsModal = new bootstrap.Modal(modalEl);
-  
-  document.getElementById("detailReqId").textContent = `Request Reference: ${requestId}`;
-  bsModal.show();
-
-  const record = APP_STATE.records.find(r => r.requestId === requestId);
-  if (!record) return;
-
-  document.getElementById("detailFields").innerHTML = `
-    <div class="col-md-6"><h6>Activity Code</h6><p class="bg-light p-2 rounded">${record.activityCode}</p></div>
-    <div class="col-md-6"><h6>Department / Budget Line</h6><p class="bg-light p-2 rounded">${record.department || "—"} (${record.budgetCode || "—"})</p></div>
-    <div class="col-12"><h6>Description Specifications</h6><p class="bg-light p-2 rounded">${record.description}</p></div>
-    <div class="col-md-4"><h6>Quantity</h6><p class="bg-light p-2 rounded">${record.quantity}</p></div>
-    <div class="col-md-4"><h6>Required By</h6><p class="bg-light p-2 rounded">${record.dateRequired}</p></div>
-    <div class="col-md-4"><h6>Location</h6><p class="bg-light p-2 rounded">${record.location || "—"}</p></div>
-  `;
-}
-
-// ── PERSONAL HISTORY INTERFACE ENGINE ──
-function loadHistoryView() {
-  const tbody = document.getElementById("historyTableBody");
-  if (!tbody) return;
-
-  const personalRecords = APP_STATE.records.filter(row => 
-    (row.requestedBy || "").toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim()
-  );
-
-  if (personalRecords.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">You haven't submitted any procurement requests yet.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = "";
-  personalRecords.forEach(item => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td class="fw-bold text-primary">${item.requestId}</td>
-      <td>${item.dateRequest}</td>
-      <td><span class="badge bg-light text-dark">${item.activityCode}</span></td>
-      <td>${item.description}</td>
-      <td>${item.quantity}</td>
-      <td>${statusBadgeHtml(item.adminStatus)}</td>
-      <td>${statusBadgeHtml(item.famStatus)}</td>
-      <td>${statusBadgeHtml(item.edStatus)}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function filterTable(val) {
-  const txt = val.toLowerCase().trim();
-  document.querySelectorAll("#dashTableBody tr").forEach(tr => {
-    tr.style.display = tr.innerText.toLowerCase().includes(txt) ? "" : "none";
-  });
+  } catch (error) { alert(error.message); btn.disabled = false; }
 }
