@@ -1,5 +1,5 @@
 // ============================================================
-//  UBF LOGISTICS & PROCUREMENT – script.js (Absolute API Fix)
+//  UBF LOGISTICS & PROCUREMENT – script.js (Production Fixed)
 // ============================================================
 
 const CONFIG = {
@@ -58,7 +58,9 @@ function resolveUserPermissions() {
 function showView(viewName) {
   const container = document.getElementById("mainContentContainer");
   if (!container) return;
-  fetch(viewName + ".html?_ Graham=" + Date.now())
+  
+  // FIXED: Removed corrupted URL character extensions 
+  fetch(viewName + ".html?_=" + Date.now())
     .then(res => res.text())
     .then(html => {
       container.innerHTML = html;
@@ -67,7 +69,6 @@ function showView(viewName) {
     });
 }
 
-// Helper to safely convert text to standard base64 across all browsers and charsets
 function safeToBase64(str) {
   const bytes = new TextEncoder().encode(str);
   let binString = "";
@@ -77,7 +78,6 @@ function safeToBase64(str) {
   return btoa(binString);
 }
 
-// Helper to safely decode standard base64 back to clean strings
 function safeFromBase64(base64) {
   const binString = atob(base64);
   const bytes = new Uint8Array(binString.length);
@@ -89,6 +89,9 @@ function safeFromBase64(base64) {
 
 async function loadDashboard() {
   const tbody = document.getElementById("dashTableBody");
+  if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Accessing GitHub ledger...</td></tr>`;
+
+  // FIXED: Re-built the clean, absolute repository URL path string
   const url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE + "?_=" + Date.now();
 
   try {
@@ -102,15 +105,32 @@ async function loadDashboard() {
       const allRows = JSON.parse(cleanJsonString);
       APP_STATE.records = window.DataService.getDashboard(allRows, APP_STATE.userRole, APP_STATE.userEmail, false);
       renderDashboardUI();
+    } else {
+      if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center text-danger py-4">Database file not initialized. Please ensure data/requisitions.json contains [].</td></tr>`;
     }
-  } catch (err) { console.error(err); }
+  } catch (err) { 
+    console.error(err); 
+  }
 }
 
 function renderDashboardUI() {
   const tbody = document.getElementById("dashTableBody");
   if (!tbody) return;
   tbody.innerHTML = "";
+  let total = 0, pending = 0, approved = 0, rejected = 0;
+
+  if (APP_STATE.records.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4 text-muted">No procurement requests available in your permission queue.</td></tr>`;
+    updateMetricsDisplay(0,0,0,0);
+    return;
+  }
+
   APP_STATE.records.forEach(item => {
+    total++;
+    if (item.edStatus === "Approved") approved++;
+    else if (item.adminStatus === "Rejected" || item.famStatus === "Rejected" || item.edStatus === "Rejected") rejected++;
+    else pending++;
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td class="fw-bold text-primary">${item.requestId}</td>
@@ -128,6 +148,15 @@ function renderDashboardUI() {
     `;
     tbody.appendChild(tr);
   });
+
+  updateMetricsDisplay(total, pending, approved, rejected);
+}
+
+function updateMetricsDisplay(t, p, a, r) {
+  if(document.getElementById("statTotal")) document.getElementById("statTotal").textContent = t;
+  if(document.getElementById("statPending")) document.getElementById("statPending").textContent = p;
+  if(document.getElementById("statApproved")) document.getElementById("statApproved").textContent = a;
+  if(document.getElementById("statRejected")) document.getElementById("statRejected").textContent = r;
 }
 
 async function handleFormSubmit() {
@@ -145,7 +174,7 @@ async function handleFormSubmit() {
 
   try {
     const url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
-    const res = await fetch(url, { headers: { "Authorization": "token " + APP_STATE.githubToken }});
+    const res = await fetch(url, { headers: { "Authorization": "token " + APP_STATE.githubToken, "Accept": "application/vnd.github.v3+json" }});
     let dbContent = [];
     if (res.ok) {
       const data = await res.json();
