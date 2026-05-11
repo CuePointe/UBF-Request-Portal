@@ -1,5 +1,5 @@
 // ============================================================
-//  UBF LOGISTICS & PROCUREMENT – script.js (Interactive Release)
+//  UBF LOGISTICS & PROCUREMENT – script.js (Production Release)
 // ============================================================
 
 const CONFIG = {
@@ -15,7 +15,8 @@ var APP_STATE = {
   isDev: false,
   roleOverride: "",
   showAllData: false,
-  records: []
+  records: [],
+  db_sha: null
 };
 
 const ROLES_CONFIG = {
@@ -72,7 +73,6 @@ function resolveUserPermissions() {
     APP_STATE.userRole = ROLES_CONFIG[cleanEmail] || "Staff";
   }
 
-  // Update navbar badge labels in index.html
   const roleLabel = document.getElementById("roleLabel");
   const emailLabel = document.getElementById("emailLabel");
   if (roleLabel) roleLabel.textContent = APP_STATE.userRole;
@@ -86,7 +86,6 @@ function showView(viewName) {
 
   document.querySelectorAll(".ubf-nav-link").forEach(lnk => lnk.classList.remove("active"));
 
-  // Appended runtime timestamp prevents GitHub Pages file caching glitches
   fetch(`${viewName}.html?_=${Date.now()}`)
     .then(res => {
       if (!res.ok) throw new Error(`Could not locate ${viewName}.html file layout template.`);
@@ -117,9 +116,7 @@ async function loadDashboard() {
   const tbody = document.getElementById("dashTableBody");
   if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Accessing GitHub ledger database records...</td></tr>`;
 
-  // Change your line to look exactly like this (notice the $ symbols):
-const url = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}?_=${Date.now()}`;
-
+  const url = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}?_=${Date.now()}`;
 
   try {
     const response = await fetch(url, {
@@ -134,7 +131,6 @@ const url = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CO
       allRows = JSON.parse(decoded);
     }
 
-    // Calls data.js calculation rules to populate memory states
     APP_STATE.records = data_getDashboard(allRows, APP_STATE.userRole, APP_STATE.userEmail, APP_STATE.showAllData);
     renderDashboardUI();
   } catch (err) {
@@ -225,9 +221,7 @@ async function handleFormSubmit() {
   };
 
   try {
-    // Change your line to look exactly like this (notice the $ symbols):
-const fetchUrl = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}`;
-
+    const fetchUrl = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}`;
     const getRes = await fetch(fetchUrl, { headers: { "Authorization": `token ${APP_STATE.githubToken}` }});
     
     let dbContent = [];
@@ -241,12 +235,13 @@ const fetchUrl = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents
     const structuredRecord = data_create(fd, APP_STATE.userEmail);
     dbContent.push(structuredRecord);
 
+    // FIXED: Stripped formatting white-space line-breaks ('null, 2') to comply with strict GitHub API upload rules
     const writeResponse = await fetch(fetchUrl, {
       method: "PUT",
       headers: { "Authorization": `token ${APP_STATE.githubToken}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         message: `Logistics Record Added: ${structuredRecord.requestId}`,
-        content: btoa(unescape(encodeURIComponent(JSON.stringify(dbContent, null, 2)))),
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(dbContent)))),
         sha: currentSha
       })
     });
@@ -255,7 +250,7 @@ const fetchUrl = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents
       alert(`Requisition successfully tracked! ID: ${structuredRecord.requestId}`);
       showView("dashboard");
     } else {
-      throw new Error("GitHub rejected database modification payload packet.");
+      throw new Error("GitHub rejected database modification payload packet. Ensure your Token has 'repo' write access checked.");
     }
   } catch (error) {
     alert("Transaction processing failed: " + error.message);
