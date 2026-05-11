@@ -1,0 +1,149 @@
+<!-- Dashboard.html -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3"><div class="ubf-stat-card ubf-stat-blue"><div class="ubf-stat-value" id="statTotal">—</div><div class="ubf-stat-label">Total in Queue</div></div></div>
+  <div class="col-6 col-md-3"><div class="ubf-stat-card ubf-stat-orange"><div class="ubf-stat-value" id="statPending">—</div><div class="ubf-stat-label">Awaiting Action</div></div></div>
+  <div class="col-6 col-md-3"><div class="ubf-stat-card ubf-stat-green"><div class="ubf-stat-value" id="statApproved">—</div><div class="ubf-stat-label">Approved / Cleared</div></div></div>
+  <div class="col-6 col-md-3"><div class="ubf-stat-card ubf-stat-red"><div class="ubf-stat-value" id="statRejected">—</div><div class="ubf-stat-label">Rejected</div></div></div>
+</div>
+
+<div class="card border-0 shadow-sm ubf-table-card">
+  <div class="card-header ubf-card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <i class="bi bi-table fs-5"></i>
+      <span class="fw-semibold" id="dashboardTableTitle">Requisitions</span>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+      <div class="input-group input-group-sm ubf-search">
+        <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-search text-white-50"></i></span>
+        <input type="text" class="form-control border-start-0" placeholder="Search…" id="dashSearch" oninput="filterTable(this.value)">
+      </div>
+      <button class="btn btn-sm ubf-btn-outline-nav" onclick="loadDashboard()" title="Refresh"><i class="bi bi-arrow-clockwise"></i></button>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover ubf-data-table mb-0" id="dashTable">
+        <thead>
+          <tr>
+            <th>Req ID</th><th>Date</th><th>Activity / Description</th><th>Qty</th>
+            <th>Date Needed</th><th>Location</th><th>Dept</th><th>Requested By</th>
+            <th>Admin</th><th>FAM</th><th>ED</th>
+            <th class="text-center" id="actionColHeader">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="dashTableBody">
+          <tr><td colspan="12" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer ubf-card-footer d-flex justify-content-between">
+    <small class="text-muted" id="dashRowCount">—</small>
+    <small class="text-muted" id="lastRefreshed">—</small>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header ubf-modal-header">
+        <h5 class="modal-title" id="confirmTitle">Confirm Action</h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="confirmBody">Are you sure?</div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn px-4 fw-semibold" id="confirmBtn" onclick="executeStatusUpdate()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAILS MODAL (Details + Comments + Documents) -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header ubf-modal-header">
+        <div>
+          <h5 class="modal-title mb-0"><i class="bi bi-file-text me-2"></i>Requisition Details</h5>
+          <small class="text-white-50" id="detailReqId">—</small>
+        </div>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <ul class="nav nav-tabs ubf-detail-tabs" id="detailTabs">
+          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDetails"><i class="bi bi-info-circle me-1"></i>Details</button></li>
+          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabComments"><i class="bi bi-chat-dots me-1"></i>Comments <span class="badge bg-secondary ms-1" id="commentCount">0</span></button></li>
+          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDocuments"><i class="bi bi-paperclip me-1"></i>Documents <span class="badge bg-secondary ms-1" id="docCount">0</span></button></li>
+        </ul>
+        <div class="tab-content p-3">
+
+          <!-- Details Tab -->
+          <div class="tab-pane fade show active" id="tabDetails">
+            <div class="row g-2 mb-3" id="detailApprovalRow" style="display:none!important">
+              <div class="col-12">
+                <div class="alert alert-info py-2 mb-0 d-flex align-items-center gap-3 flex-wrap" id="detailActionBar">
+                  <span id="detailActionMsg" class="fw-semibold"></span>
+                  <div class="ms-auto d-flex gap-2">
+                    <button class="btn btn-success btn-sm px-3 fw-semibold" id="detailApproveBtn" onclick="detailAction('approve')">
+                      <i class="bi bi-check-circle-fill me-1"></i><span id="detailApproveLabel">Verify</span>
+                    </button>
+                    <button class="btn btn-danger btn-sm px-3 fw-semibold" onclick="detailAction('reject')">
+                      <i class="bi bi-x-circle-fill me-1"></i>Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2" id="detailFields">
+              <div class="col-12 text-center py-3"><div class="spinner-border text-primary"></div></div>
+            </div>
+          </div>
+
+          <!-- Comments Tab -->
+          <div class="tab-pane fade" id="tabComments">
+            <div id="commentsList" class="ubf-comment-list mb-2">
+              <div class="text-center py-3 text-muted small">Loading comments…</div>
+            </div>
+            <div class="ubf-comment-input-box">
+              <label class="ubf-label">Add a Comment</label>
+              <textarea class="form-control ubf-input mb-2" id="commentInput" rows="3" placeholder="Type your comment here…"></textarea>
+              <div class="d-flex justify-content-end">
+                <button class="btn ubf-btn-primary px-4 fw-semibold" onclick="submitComment()">
+                  <i class="bi bi-send me-2"></i>Post Comment
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Documents Tab -->
+          <div class="tab-pane fade" id="tabDocuments">
+            <div id="documentsList" class="mb-2">
+              <div class="text-center py-3 text-muted small">Loading documents…</div>
+            </div>
+            <div class="ubf-upload-box">
+              <label class="ubf-label">Upload Supporting Document</label>
+              <div class="text-muted small mb-2">Accepted: LPOs, quotations, delivery notes, invoices, any file type (max 5MB).</div>
+              <div class="d-flex gap-2 flex-wrap align-items-center">
+                <input type="file" id="docFileInput" class="form-control ubf-input" style="max-width:320px" onchange="onFileSelected(this)">
+                <button class="btn ubf-btn-primary px-4 fw-semibold" id="uploadDocBtn" onclick="uploadDocument()" disabled>
+                  <i class="bi bi-cloud-upload me-2"></i>Upload
+                </button>
+              </div>
+              <div class="mt-2 small text-primary" id="uploadProgress" style="display:none">
+                <div class="spinner-border spinner-border-sm me-2"></div>Processing secure attachment upload…
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer border-0 ubf-card-footer">
+        <small class="text-muted" id="detailModalFooter">—</small>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
