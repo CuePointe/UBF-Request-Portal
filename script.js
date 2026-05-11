@@ -116,7 +116,8 @@ async function loadDashboard() {
   const tbody = document.getElementById("dashTableBody");
   if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Accessing GitHub ledger database records...</td></tr>`;
 
-  const url = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}?_=${Date.now()}`;
+  const url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE + "?_=" + Date.now();
+
 
   try {
     const response = await fetch(url, {
@@ -221,7 +222,8 @@ async function handleFormSubmit() {
   };
 
   try {
-    const fetchUrl = `github.com{CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.DATABASE_FILE}`;
+        const fetchUrl = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
+
     const getRes = await fetch(fetchUrl, { headers: { "Authorization": `token ${APP_STATE.githubToken}` }});
     
     let dbContent = [];
