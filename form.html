@@ -1,4 +1,4 @@
-<!-- Form.html -->
+<!-- form.html -->
 <div class="row justify-content-center">
   <div class="col-12 col-xl-10">
     <div class="card border-0 shadow-sm ubf-form-card">
@@ -8,7 +8,6 @@
         <span class="ms-auto badge ubf-badge-outline">UBF Official Form</span>
       </div>
       <div class="ubf-form-letterhead d-flex align-items-center gap-3 px-4 py-3">
-        <!-- Logo source will be injected dynamically via script.js -->
         <img id="ubfLogoForm" src="" class="ubf-form-logo" alt="UBF Logo">
         <div>
           <div class="ubf-form-org-name">Uganda Biodiversity Fund</div>
@@ -23,39 +22,39 @@
         <form id="requisitionForm" novalidate onsubmit="return false;">
           <div class="row g-3 mb-3">
             <div class="col-md-4">
-              <label class="ubf-label">Activity Code <span class="text-danger">*</span></label>
+              <label for="f_activityCode" class="ubf-label">Activity Code <span class="text-danger">*</span></label>
               <input type="text" class="form-control ubf-input" id="f_activityCode" placeholder="e.g. ACT-2025-001" required>
             </div>
             <div class="col-md-8">
-              <label class="ubf-label">Description / Specification <span class="text-danger">*</span></label>
+              <label for="f_description" class="ubf-label">Description / Specification <span class="text-danger">*</span></label>
               <textarea class="form-control ubf-input" id="f_description" rows="3" placeholder="Detailed description of goods or services…" required></textarea>
             </div>
           </div>
           <div class="row g-3 mb-3">
             <div class="col-sm-3">
-              <label class="ubf-label">Quantity <span class="text-danger">*</span></label>
+              <label class="ubf-label" for="f_quantity">Quantity <span class="text-danger">*</span></label>
               <input type="text" class="form-control ubf-input" id="f_quantity" placeholder="e.g. 20 reams" required>
             </div>
             <div class="col-sm-3">
-              <label class="ubf-label">Date Required <span class="text-danger">*</span></label>
+              <label class="ubf-label" for="f_dateRequired">Date Required <span class="text-danger">*</span></label>
               <input type="date" class="form-control ubf-input" id="f_dateRequired" required>
             </div>
             <div class="col-sm-6">
-              <label class="ubf-label">Location of Work</label>
+              <label class="ubf-label" for="f_location">Location of Work</label>
               <input type="text" class="form-control ubf-input" id="f_location" placeholder="e.g. UBF Office, Plot 425 Zzimwe Road">
             </div>
           </div>
           <div class="row g-3 mb-3">
             <div class="col-md-3">
-              <label class="ubf-label">Account Code / Name</label>
+              <label class="ubf-label" for="f_account">Account Code / Name</label>
               <input type="text" class="form-control ubf-input" id="f_account" placeholder="Account code">
             </div>
             <div class="col-md-3">
-              <label class="ubf-label">Donor Code / Name</label>
+              <label class="ubf-label" for="f_donor">Donor Code / Name</label>
               <input type="text" class="form-control ubf-input" id="f_donor" placeholder="Donor code">
             </div>
             <div class="col-md-3">
-              <label class="ubf-label">Department</label>
+              <label class="ubf-label" for="f_department">Department</label>
               <select class="form-select ubf-input" id="f_department">
                 <option value="">— Select —</option>
                 <option>Administration</option><option>Finance</option>
@@ -65,7 +64,7 @@
               </select>
             </div>
             <div class="col-md-3">
-              <label class="ubf-label">Budget Code</label>
+              <label class="ubf-label" for="f_budgetCode">Budget Code</label>
               <input type="text" class="form-control ubf-input" id="f_budgetCode" placeholder="Budget line">
             </div>
           </div>
