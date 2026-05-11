@@ -155,7 +155,8 @@ async function data_uploadDoc(allRows, requestId, githubToken, githubOwner, gith
 
   const cleanFileName = fileName.replace(/[^a-zA-Z0-9.\-_]/g, '_');
   const uniqueStoragePath = `attachments/${requestId}/${Date.now()}_${cleanFileName}`;
-  const uploadApiUrl = `github.com{githubOwner}/${githubRepo}/contents/${uniqueStoragePath}`;
+    const uploadApiUrl = "github.com" + githubOwner + "/" + githubRepo + "/contents/" + uniqueStoragePath;
+
 
   const response = await fetch(uploadApiUrl, {
     method: "PUT",
