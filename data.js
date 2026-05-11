@@ -2,9 +2,6 @@
 //  UBF LOGISTICS & PROCUREMENT – data.js Layer (GitHub Native)
 // ============================================================
 
-/**
- * Safely structures and maps raw JSON database fields into clean objects
- */
 function rowToObj_(row) {
   return {
     requestId:    row.requestId || "",
@@ -28,7 +25,6 @@ function rowToObj_(row) {
   };
 }
 
-// ── NATIVE READ: Fetch Dashboard rows (role-filtered) ──
 function data_getDashboard(allRows, role, realEmail, devShowAll) {
   const cleanEmail = (realEmail || "").toLowerCase().trim();
   const rows = [];
@@ -56,7 +52,6 @@ function data_getDashboard(allRows, role, realEmail, devShowAll) {
   return rows;
 }
 
-// ── NATIVE READ: Extract My History ──
 function data_getHistory(allRows, realEmail) {
   const cleanEmail = (realEmail || "").toLowerCase().trim();
   const rows = [];
@@ -71,7 +66,6 @@ function data_getHistory(allRows, realEmail) {
   return rows;
 }
 
-// ── NATIVE CREATE: Format a new database record ──
 function data_create(fd, submitterEmail) {
   const now = new Date();
   const yyyy = now.getFullYear();
@@ -102,7 +96,6 @@ function data_create(fd, submitterEmail) {
   };
 }
 
-// ── NATIVE UPDATE: Approve / Reject status routing ──
 function data_updateStatus(allRows, requestId, role, action, currentUserEmail) {
   let recordIndex = allRows.findIndex(r => r.requestId.toString() === requestId.toString());
   if (recordIndex === -1) return null;
@@ -126,7 +119,6 @@ function data_updateStatus(allRows, requestId, role, action, currentUserEmail) {
   return ns;
 }
 
-// ── NATIVE READ: Extract Full details + comments + docs ──
 function data_getDetails(allRows, requestId) {
   const record = allRows.find(r => r.requestId.toString() === requestId.toString());
   if (!record) return null;
@@ -139,7 +131,6 @@ function data_getDetails(allRows, requestId) {
   };
 }
 
-// ── NATIVE CREATE: Save a user comment entry ──
 function data_addComment(allRows, requestId, email, role, text) {
   let recordIndex = allRows.findIndex(r => r.requestId.toString() === requestId.toString());
   if (recordIndex === -1) return null;
@@ -158,7 +149,6 @@ function data_addComment(allRows, requestId, email, role, text) {
   return newComment;
 }
 
-// ── NATIVE CREATE: Process and Upload file attachments directly to GitHub repository ──
 async function data_uploadDoc(allRows, requestId, githubToken, githubOwner, githubRepo, email, role, fileName, base64Data) {
   let recordIndex = allRows.findIndex(r => r.requestId.toString() === requestId.toString());
   if (recordIndex === -1) throw new Error("Target requisition reference tag not located.");
@@ -198,7 +188,6 @@ async function data_uploadDoc(allRows, requestId, githubToken, githubOwner, gith
   return docMetadataRecord;
 }
 
-// ── NATIVE CREATE: Append Audit trace logs ──
 function data_audit(targetRow, role, actor, status) {
   const timestampStr = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString();
   
