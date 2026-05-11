@@ -58,7 +58,7 @@ function resolveUserPermissions() {
 function showView(viewName) {
   const container = document.getElementById("mainContentContainer");
   if (!container) return;
-  fetch(viewName + ".html?_=" + Date.now())
+  fetch(viewName + ".html?_ Graham=" + Date.now())
     .then(res => res.text())
     .then(html => {
       container.innerHTML = html;
@@ -67,10 +67,29 @@ function showView(viewName) {
     });
 }
 
+// Helper to safely convert text to standard base64 across all browsers and charsets
+function safeToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binString = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binString += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binString);
+}
+
+// Helper to safely decode standard base64 back to clean strings
+function safeFromBase64(base64) {
+  const binString = atob(base64);
+  const bytes = new Uint8Array(binString.length);
+  for (let i = 0; i < binString.length; i++) {
+    bytes[i] = binString.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
+
 async function loadDashboard() {
   const tbody = document.getElementById("dashTableBody");
-  // CRITICAL FIX: Direct absolute URL call path mapping to GitHub APIs
-  const url = "https://api.github.com/repos/" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE + "?_ Graham=" + Date.now();
+  const url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE + "?_=" + Date.now();
 
   try {
     const response = await fetch(url, {
@@ -79,9 +98,8 @@ async function loadDashboard() {
     if (response.ok) {
       const data = await response.json();
       APP_STATE.db_sha = data.sha;
-      const decoded = decodeURIComponent(escape(atob(data.content)));
-      const allRows = JSON.parse(decoded);
-      // Reads from global window layout hook
+      const cleanJsonString = safeFromBase64(data.content.replace(/\s/g, ""));
+      const allRows = JSON.parse(cleanJsonString);
       APP_STATE.records = window.DataService.getDashboard(allRows, APP_STATE.userRole, APP_STATE.userEmail, false);
       renderDashboardUI();
     }
@@ -126,24 +144,32 @@ async function handleFormSubmit() {
   };
 
   try {
-    const url = "https://api.github.com/repos/" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
+    const url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
     const res = await fetch(url, { headers: { "Authorization": "token " + APP_STATE.githubToken }});
     let dbContent = [];
     if (res.ok) {
       const data = await res.json();
       APP_STATE.db_sha = data.sha;
-      dbContent = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+      const cleanJsonString = safeFromBase64(data.content.replace(/\s/g, ""));
+      dbContent = JSON.parse(cleanJsonString);
     }
 
     const newRecord = window.DataService.createRecord(fd, APP_STATE.userEmail);
     dbContent.push(newRecord);
 
+    const jsonStringPayload = JSON.stringify(dbContent);
+    const base64Payload = safeToBase64(jsonStringPayload);
+
     const writeRes = await fetch(url, {
       method: "PUT",
-      headers: { "Authorization": "token " + APP_STATE.githubToken, "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "token " + APP_STATE.githubToken, 
+        "Content-Type": "application/json",
+        "Accept": "application/vnd.github.v3+json"
+      },
       body: JSON.stringify({
         message: "Add request " + newRecord.requestId,
-        content: btoa(unescape(encodeURIComponent(JSON.stringify(dbContent)))),
+        content: base64Payload,
         sha: APP_STATE.db_sha
       })
     });
@@ -151,6 +177,12 @@ async function handleFormSubmit() {
     if (writeRes.ok) {
       alert("Success! ID: " + newRecord.requestId);
       showView("dashboard");
+    } else {
+      const errData = await writeRes.json();
+      throw new Error(errData.message || "GitHub API write blocked.");
     }
-  } catch (error) { alert(error.message); btn.disabled = false; }
+  } catch (error) { 
+    alert("API Error: " + error.message); 
+    btn.disabled = false; 
+  }
 }
