@@ -1,5 +1,5 @@
 // ============================================================
-//  UBF LOGISTICS & PROCUREMENT – script.js (Production Fixed)
+//  UBF LOGISTICS & PROCUREMENT – script.js (Original Router)
 // ============================================================
 
 const CONFIG = {
@@ -23,6 +23,8 @@ const ROLES_CONFIG = {
   "i.amani@ugandabiodiversityfund.org"   : "ED"
 };
 
+const DEV_EMAILS = ["t.otieno@ugandabiodiversityfund.org"];
+
 document.addEventListener("DOMContentLoaded", function() {
   APP_STATE.githubToken = localStorage.getItem("ubf_github_token") || "";
   APP_STATE.userEmail = localStorage.getItem("ubf_user_email") || "";
@@ -36,8 +38,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function promptForCredentials() {
-  const email = prompt("Enter your UBF Email:", APP_STATE.userEmail);
-  const token = prompt("Enter your GitHub Personal Access Token (PAT):");
+  var email = prompt("Enter your UBF Corporate Email:", APP_STATE.userEmail);
+  var token = prompt("Enter your GitHub Personal Access Token (PAT):");
+  
   if (email && token) {
     APP_STATE.userEmail = email.trim().toLowerCase();
     APP_STATE.githubToken = token.trim();
@@ -49,89 +52,62 @@ function promptForCredentials() {
 }
 
 function resolveUserPermissions() {
-  const cleanEmail = APP_STATE.userEmail.toLowerCase().trim();
+  var cleanEmail = APP_STATE.userEmail.toLowerCase().trim();
+  APP_STATE.isDev = DEV_EMAILS.includes(cleanEmail);
   APP_STATE.userRole = ROLES_CONFIG[cleanEmail] || "Staff";
-  if(document.getElementById("roleLabel")) document.getElementById("roleLabel").textContent = APP_STATE.userRole;
-  if(document.getElementById("emailLabel")) document.getElementById("emailLabel").textContent = APP_STATE.userEmail;
+
+  var roleLabel = document.getElementById("roleLabel");
+  var emailLabel = document.getElementById("emailLabel");
+  if (roleLabel) roleLabel.textContent = APP_STATE.userRole;
+  if (emailLabel) emailLabel.textContent = APP_STATE.userEmail;
 }
 
 function showView(viewName) {
-  const container = document.getElementById("mainContentContainer");
+  var container = document.getElementById("mainContentContainer");
   if (!container) return;
-  
-  // FIXED: Removed corrupted URL character extensions 
-  fetch(viewName + ".html?_=" + Date.now())
-    .then(res => res.text())
-    .then(html => {
+
+  fetch(viewName + ".html")
+    .then(function(res) { return res.text(); })
+    .then(function(html) {
       container.innerHTML = html;
-      if (viewName === "dashboard") loadDashboard();
-      if (viewName === "form") document.getElementById("requestedByDisplay").textContent = APP_STATE.userEmail;
+      if (viewName === "dashboard") {
+        loadDashboard();
+      } else if (viewName === "form") {
+        document.getElementById("requestedByDisplay").textContent = APP_STATE.userEmail;
+        document.getElementById("ubfLogoForm").src = "logo.png";
+      }
     });
-}
-
-function safeToBase64(str) {
-  const bytes = new TextEncoder().encode(str);
-  let binString = "";
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binString += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binString);
-}
-
-function safeFromBase64(base64) {
-  const binString = atob(base64);
-  const bytes = new Uint8Array(binString.length);
-  for (let i = 0; i < binString.length; i++) {
-    bytes[i] = binString.charCodeAt(i);
-  }
-  return new TextDecoder().decode(bytes);
 }
 
 async function loadDashboard() {
-  const tbody = document.getElementById("dashTableBody");
-  if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Accessing GitHub ledger...</td></tr>`;
-
-  // FIXED: Re-built the clean, absolute repository URL path string
-  const url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE + "?_=" + Date.now();
+  var tbody = document.getElementById("dashTableBody");
+  var url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
 
   try {
-    const response = await fetch(url, {
-      headers: { "Authorization": "token " + APP_STATE.githubToken, "Accept": "application/vnd.github.v3+json" }
+    var response = await fetch(url, {
+      headers: { "Authorization": "token " + APP_STATE.githubToken }
     });
+    
     if (response.ok) {
-      const data = await response.json();
+      var data = await response.json();
       APP_STATE.db_sha = data.sha;
-      const cleanJsonString = safeFromBase64(data.content.replace(/\s/g, ""));
-      const allRows = JSON.parse(cleanJsonString);
-      APP_STATE.records = window.DataService.getDashboard(allRows, APP_STATE.userRole, APP_STATE.userEmail, false);
+      var decoded = decodeURIComponent(escape(atob(data.content)));
+      var allRows = JSON.parse(decoded);
+      APP_STATE.records = data_getDashboard(allRows, APP_STATE.userRole, APP_STATE.userEmail, false);
       renderDashboardUI();
-    } else {
-      if (tbody) tbody.innerHTML = `<tr><td colspan="12" class="text-center text-danger py-4">Database file not initialized. Please ensure data/requisitions.json contains [].</td></tr>`;
     }
-  } catch (err) { 
-    console.error(err); 
+  } catch (err) {
+    console.error(err);
   }
 }
 
 function renderDashboardUI() {
-  const tbody = document.getElementById("dashTableBody");
+  var tbody = document.getElementById("dashTableBody");
   if (!tbody) return;
   tbody.innerHTML = "";
-  let total = 0, pending = 0, approved = 0, rejected = 0;
 
-  if (APP_STATE.records.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4 text-muted">No procurement requests available in your permission queue.</td></tr>`;
-    updateMetricsDisplay(0,0,0,0);
-    return;
-  }
-
-  APP_STATE.records.forEach(item => {
-    total++;
-    if (item.edStatus === "Approved") approved++;
-    else if (item.adminStatus === "Rejected" || item.famStatus === "Rejected" || item.edStatus === "Rejected") rejected++;
-    else pending++;
-
-    const tr = document.createElement("tr");
+  APP_STATE.records.forEach(function(item) {
+    var tr = document.createElement("tr");
     tr.innerHTML = `
       <td class="fw-bold text-primary">${item.requestId}</td>
       <td>${item.dateRequest}</td>
@@ -141,29 +117,20 @@ function renderDashboardUI() {
       <td>${item.location || "—"}</td>
       <td>${item.department || "—"}</td>
       <td><small>${item.requestedBy}</small></td>
-      <td><span class="badge bg-secondary">${item.adminStatus}</span></td>
+      <td><span class="badge bg-warning text-dark">${item.adminStatus}</span></td>
       <td><span class="badge bg-secondary">${item.famStatus}</span></td>
       <td><span class="badge bg-secondary">${item.edStatus}</span></td>
-      <td>—</td>
+      <td class="text-center">—</td>
     `;
     tbody.appendChild(tr);
   });
-
-  updateMetricsDisplay(total, pending, approved, rejected);
-}
-
-function updateMetricsDisplay(t, p, a, r) {
-  if(document.getElementById("statTotal")) document.getElementById("statTotal").textContent = t;
-  if(document.getElementById("statPending")) document.getElementById("statPending").textContent = p;
-  if(document.getElementById("statApproved")) document.getElementById("statApproved").textContent = a;
-  if(document.getElementById("statRejected")) document.getElementById("statRejected").textContent = r;
 }
 
 async function handleFormSubmit() {
-  const btn = document.getElementById("submitBtn");
+  var btn = document.getElementById("submitBtn");
   btn.disabled = true;
 
-  const fd = {
+  var fd = {
     activityCode: document.getElementById("f_activityCode").value,
     description: document.getElementById("f_description").value,
     quantity: document.getElementById("f_quantity").value,
@@ -173,45 +140,33 @@ async function handleFormSubmit() {
   };
 
   try {
-    const url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
-    const res = await fetch(url, { headers: { "Authorization": "token " + APP_STATE.githubToken, "Accept": "application/vnd.github.v3+json" }});
-    let dbContent = [];
+    var url = "github.com" + CONFIG.GITHUB_OWNER + "/" + CONFIG.GITHUB_REPO + "/contents/" + CONFIG.DATABASE_FILE;
+    var res = await fetch(url, { headers: { "Authorization": "token " + APP_STATE.githubToken }});
+    var dbContent = [];
+    
     if (res.ok) {
-      const data = await res.json();
+      var data = await res.json();
       APP_STATE.db_sha = data.sha;
-      const cleanJsonString = safeFromBase64(data.content.replace(/\s/g, ""));
-      dbContent = JSON.parse(cleanJsonString);
+      dbContent = JSON.parse(decodeURIComponent(escape(atob(data.content))));
     }
 
-    const newRecord = window.DataService.createRecord(fd, APP_STATE.userEmail);
+    var newRecord = data_create(fd, APP_STATE.userEmail);
     dbContent.push(newRecord);
 
-    const jsonStringPayload = JSON.stringify(dbContent);
-    const base64Payload = safeToBase64(jsonStringPayload);
-
-    const writeRes = await fetch(url, {
+    await fetch(url, {
       method: "PUT",
-      headers: { 
-        "Authorization": "token " + APP_STATE.githubToken, 
-        "Content-Type": "application/json",
-        "Accept": "application/vnd.github.v3+json"
-      },
+      headers: { "Authorization": "token " + APP_STATE.githubToken, "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: "Add request " + newRecord.requestId,
-        content: base64Payload,
+        message: "Add requisition " + newRecord.requestId,
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(dbContent, null, 2)))),
         sha: APP_STATE.db_sha
       })
     });
 
-    if (writeRes.ok) {
-      alert("Success! ID: " + newRecord.requestId);
-      showView("dashboard");
-    } else {
-      const errData = await writeRes.json();
-      throw new Error(errData.message || "GitHub API write blocked.");
-    }
-  } catch (error) { 
-    alert("API Error: " + error.message); 
-    btn.disabled = false; 
+    alert("Success! ID: " + newRecord.requestId);
+    showView("dashboard");
+  } catch (error) {
+    alert("Error: " + error.message);
+    btn.disabled = false;
   }
 }
