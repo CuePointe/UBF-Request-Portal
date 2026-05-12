@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "UBF-20260512-8ABB66",
+    "activityCode": "ubf act-2026",
+    "description": "ubrellas",
+    "specification": "staff office umbrellas",
+    "quantity": "10",
+    "unit": "",
+    "dateRequired": "2026-05-12",
+    "locationOfWork": "office",
+    "contractPeriod": "1 year",
+    "accountCode": "",
+    "accountName": "ubf other income",
+    "donorCode": "",
+    "donorName": "internally generated funds",
+    "department": "Administration",
+    "budgetCode": "2026-Q3",
+    "estimatedCost": "",
+    "currency": "UGX",
+    "submittedBy": "t.otieno@ugandabiodiversityfund.org",
+    "submittedByName": "Tom Otieno",
+    "submittedByTitle": "Staff",
+    "submittedByRole": "Staff",
+    "status": "Pending Review",
+    "attachments": [],
+    "createdAt": "2026-05-12T10:54:31.944Z",
+    "updatedAt": "2026-05-12T10:54:31.944Z",
+    "approval": {
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "t.otieno@ugandabiodiversityfund.org",
+        "byName": "Tom Otieno",
+        "byTitle": "Staff",
+        "at": "2026-05-12T10:54:31.944Z",
+        "note": "Initial submission"
+      }
+    ]
+  }
+]
