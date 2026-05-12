@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UBF — Request for Services / Goods</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Official UBF form table */
+    .ubf-doc {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Document header — logo left, title centre, ref right */
+    .doc-header {
+      display: grid;
+      grid-template-columns: 80px 1fr 120px;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 3px solid var(--ubf-blue-darker);
+      gap: 1rem;
+    }
+
+    .doc-header-logo {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    .doc-header-centre {
+      text-align: center;
+    }
+
+    .doc-header-centre .org-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ubf-blue-darker);
+    }
+
+    .doc-header-centre .form-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin: 0.2rem 0 0;
+      font-family: var(--font-body);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .doc-header-right {
+      text-align: right;
+      font-size: 0.72rem;
+      color: var(--gray-500);
+    }
+
+    .doc-header-right strong {
+      display: block;
+      color: var(--gray-900);
+      font-size: 0.78rem;
+    }
+
+    /* Form table */
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .doc-table th,
+    .doc-table td {
+      border: 1px solid var(--gray-300);
+      padding: 0.55rem 0.85rem;
+      vertical-align: middle;
+      font-size: 0.875rem;
+    }
+
+    .doc-table th {
+      background: var(--ubf-blue-light);
+      color: var(--ubf-blue-darker);
+      font-weight: 700;
+      font-size: 0.78rem;
+      white-space: nowrap;
+      font-family: var(--font-body);
+    }
+
+    .doc-table td input,
+    .doc-table td select,
+    .doc-table td textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      color: var(--gray-900);
+      background: transparent;
+      resize: vertical;
+      min-height: 28px;
+    }
+
+    .doc-table td input:focus,
+    .doc-table td select:focus,
+    .doc-table td textarea:focus {
+      background: #fffde7;
+    }
+
+    .doc-table td.spec-cell textarea {
+      min-height: 80px;
+    }
+
+    /* Approval row — 3 columns */
+    .approval-row td {
+      width: 33.33%;
+      vertical-align: top;
+      padding: 0.75rem 1rem;
+    }
+
+    .approval-cell-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--ubf-blue-darker);
+      margin-bottom: 0.4rem;
+    }
+
+    .approval-cell-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--gray-900);
+    }
+
+    .approval-cell-title {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      margin-top: 0.15rem;
+    }
+
+    .approval-cell-status {
+      margin-top: 0.6rem;
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-submitting { background: var(--ubf-blue-light);  color: var(--ubf-blue-darker); }
+    .status-awaiting   { background: var(--amber-light);     color: #92400e; }
+
+    /* Footer buttons */
+    .doc-footer {
+      padding: 1.25rem 1.5rem;
+      background: var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 1rem;
+      border-top: 1px solid var(--gray-200);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="navbar-brand" href="dashboard.html">
+    <div class="navbar-logo">
+      <img src="ubf-logo.jpg" alt="UBF Logo"
+           onerror="this.style.display='none';this.parentElement.setAttribute('data-fallback','true');" />
+    </div>
+    <div class="navbar-title">
+      <span class="org">Uganda Biodiversity Fund</span>
+      <span class="portal">Request Portal</span>
+    </div>
+  </a>
+  <ul class="navbar-nav">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="form.html" class="active">New Requisition</a></li>
+    <li><a href="history.html">History</a></li>
+  </ul>
+  <div class="navbar-user">
+    <div class="navbar-user-info">
+      <span class="user-email" id="nav-user-name">Loading…</span>
+      <span class="role-badge" id="nav-user-role">—</span>
+    </div>
+    <button id="btn-logout">Logout</button>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <div id="global-error-banner"   class="banner"></div>
+  <div id="global-success-banner" class="banner"></div>
+
+  <div class="page-header">
+    <h1>Request for Services / Goods</h1>
+    <p>Uganda Biodiversity Fund — official procurement request form</p>
+  </div>
+
+  <div class="ubf-doc">
+  <form id="requisition-form" novalidate autocomplete="off">
+
+    <!-- ══ DOCUMENT HEADER ══ -->
+    <div class="doc-header">
+      <img class="doc-header-logo" src="ubf-logo.jpg" alt="Uganda Biodiversity Fund Logo"
+           onerror="this.style.display='none';" />
+      <div class="doc-header-centre">
+        <div class="org-name">Uganda Biodiversity Fund</div>
+        <div class="form-name">Request for Services / Goods Form</div>
+      </div>
+      <div class="doc-header-right">
+        Ref No:<br/>
+        <strong id="form-ref-display">Auto-assigned</strong>
+      </div>
+    </div>
+
+    <!-- ══ FORM FIELDS TABLE ══ -->
+    <table class="doc-table">
+
+      <!-- Activity Code + Description -->
+      <tr>
+        <th style="width:160px;">Activity Code</th>
+        <td>
+          <input type="text" id="form-activity-code" name="activityCode"
+                 placeholder="e.g. UBF-2025-ACT-01" />
+        </td>
+        <th style="width:130px;">Description <span style="color:var(--red)">*</span></th>
+        <td>
+          <input type="text" id="form-description" name="description"
+                 placeholder="e.g. Procurement of Branded Umbrellas" required />
+        </td>
+      </tr>
+
+      <!-- Specification -->
+      <tr>
+        <th>Specification of goods / services requested <span style="color:var(--red)">*</span></th>
+        <td colspan="3" class="spec-cell">
+          <textarea id="form-specification" name="specification"
+                    placeholder="Full description and specification of the goods or services required."
+                    required></textarea>
+        </td>
+      </tr>
+
+      <!-- Quantity + Date Required -->
+      <tr>
+        <th>Quantity <span style="color:var(--red)">*</span></th>
+        <td>
+          <input type="number" id="form-quantity" name="quantity"
+                 min="1" step="1" placeholder="e.g. 20" required />
+        </td>
+        <th>Date Required</th>
+        <td>
+          <input type="date" id="form-date-required" name="dateRequired" />
+        </td>
+      </tr>
+
+      <!-- Location of Work -->
+      <tr>
+        <th>Location of Work</th>
+        <td colspan="3">
+          <input type="text" id="form-location" name="locationOfWork"
+                 placeholder="e.g. UBF Office, Plot 425 Zzimwe Road, Kampala" />
+        </td>
+      </tr>
+
+      <!-- Contract Period -->
+      <tr>
+        <th>Contract Period</th>
+        <td colspan="3">
+          <input type="text" id="form-contract-period" name="contractPeriod"
+                 placeholder="e.g. 1 week / 30 days" />
+        </td>
+      </tr>
+
+      <!-- Financial Coding row -->
+      <tr>
+        <th>Account Code: Name:</th>
+        <td>
+          <input type="text" id="form-account-code" name="accountCode"
+                 placeholder="Code" style="width:45%; display:inline-block; margin-right:4%;" />
+          <input type="text" id="form-account-name" name="accountName"
+                 placeholder="Name" style="width:50%; display:inline-block;" />
+        </td>
+        <th>Donor Code: Name:</th>
+        <td>
+          <input type="text" id="form-donor-code" name="donorCode"
+                 placeholder="Code" style="width:45%; display:inline-block; margin-right:4%;" />
+          <input type="text" id="form-donor-name" name="donorName"
+                 placeholder="Name" style="width:50%; display:inline-block;" />
+        </td>
+      </tr>
+
+      <tr>
+        <th>Department</th>
+        <td>
+          <select id="form-department" name="department">
+            <option value="">— Select —</option>
+            <option value="Administration">Administration</option>
+            <option value="Finance">Finance</option>
+            <option value="Programmes">Programmes</option>
+            <option value="Communications">Communications</option>
+            <option value="Executive Office">Executive Office</option>
+          </select>
+        </td>
+        <th>Budget Code</th>
+        <td>
+          <input type="text" id="form-budget-code" name="budgetCode"
+                 placeholder="e.g. BUD-2025-Q3" />
+        </td>
+      </tr>
+
+      <!-- Attach supporting documents -->
+      <tr>
+        <th>Attach supporting documents</th>
+        <td colspan="3">
+          <input type="file" id="form-attachments" name="attachments"
+                 multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" />
+          <div class="file-info" id="form-attachment-info"></div>
+        </td>
+      </tr>
+
+      <!-- ══ APPROVAL CHAIN — strictly as per UBF template ══ -->
+      <tr class="approval-row">
+        <!-- Step 1: Requested by (current user) -->
+        <td>
+          <div class="approval-cell-label">Requested by:</div>
+          <div class="approval-cell-name"  id="form-submitter-name">—</div>
+          <div class="approval-cell-title" id="form-submitter-title">—</div>
+          <span class="approval-cell-status status-submitting">Submitting</span>
+        </td>
+
+        <!-- Step 2: Reviewed by Susan Abonyo -->
+        <td>
+          <div class="approval-cell-label">Reviewed by:</div>
+          <div class="approval-cell-name">Susan Abonyo</div>
+          <div class="approval-cell-title">Administration Officer</div>
+          <span class="approval-cell-status status-awaiting">Awaiting Review</span>
+        </td>
+
+        <!-- Step 3: Cleared by Winnie Nabatanzi -->
+        <td>
+          <div class="approval-cell-label">Cleared by:</div>
+          <div class="approval-cell-name">Winnie Nabatanzi</div>
+          <div class="approval-cell-title">Finance and Administration Manager</div>
+          <span class="approval-cell-status status-awaiting">Awaiting Clearance</span>
+        </td>
+      </tr>
+
+      <!-- Step 4: Approved by Ivan — separate full-width row -->
+      <tr>
+        <td colspan="4" style="border-top: 2px solid var(--ubf-blue-light);">
+          <div class="approval-cell-label">Approved by:</div>
+          <div class="approval-cell-name">Ivan Amanigaruhanga</div>
+          <div class="approval-cell-title">Executive Director</div>
+          <span class="approval-cell-status status-awaiting">Awaiting Approval</span>
+        </td>
+      </tr>
+
+    </table>
+
+    <!-- ══ FOOTER BUTTONS ══ -->
+    <div class="doc-footer">
+      <div id="form-loading" style="display:none;">
+        <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--ubf-blue-dark);">
+          <div class="spinner"
+               style="width:18px;height:18px;border-width:2px;margin:0;
+                      border-color:var(--ubf-blue-light);border-top-color:var(--ubf-blue-dark);"></div>
+          Saving to GitHub…
+        </div>
+      </div>
+      <a href="dashboard.html" class="btn btn-secondary">Cancel</a>
+      <button type="submit" id="btn-submit-requisition" class="btn btn-primary btn-lg">
+        Submit Requisition
+      </button>
+    </div>
+
+  </form>
+  </div><!-- /.ubf-doc -->
+
+</div><!-- /.page-wrapper -->
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
