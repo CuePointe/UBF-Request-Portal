@@ -1,17 +1,1 @@
-{
-  "timeZone": "Africa/Nairobi",
-  "dependencies": {},
-  "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8",
-  "oauthScopes": [
-    "openid",
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive"
-  ],
-  "webapp": {
-    "executeAs": "USER_ACCESSING",
-    "access": "ANYONE"
-  }
-}
+
