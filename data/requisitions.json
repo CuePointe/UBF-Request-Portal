@@ -82,5 +82,65 @@
         "note": ""
       }
     ]
+  },
+  {
+    "id": "UBF-20260513-965DA3",
+    "activityCode": "U006",
+    "description": "BOOKS",
+    "specification": "Q4",
+    "quantity": "30",
+    "unit": "",
+    "dateRequired": "2027-04-25",
+    "locationOfWork": "UBF OFFICES",
+    "contractPeriod": "1",
+    "accountCode": "",
+    "accountName": "SF04",
+    "donorCode": "",
+    "donorName": "UBF OTHER INCOMES",
+    "department": "Administration",
+    "budgetCode": "SU",
+    "estimatedCost": "",
+    "currency": "UGX",
+    "submittedBy": "s.abonyo@ugandabiodiversityfund.org",
+    "submittedByName": "Susan Abonyo",
+    "submittedByTitle": "Administration Officer",
+    "submittedByRole": "Admin Officer",
+    "status": "Pending Review",
+    "attachments": [],
+    "createdAt": "2026-05-13T06:59:33.236Z",
+    "updatedAt": "2026-05-13T06:59:33.236Z",
+    "approval": {
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "s.abonyo@ugandabiodiversityfund.org",
+        "byName": "Susan Abonyo",
+        "byTitle": "Administration Officer",
+        "at": "2026-05-13T06:59:33.236Z",
+        "note": "Initial submission"
+      }
+    ]
   }
 ]
