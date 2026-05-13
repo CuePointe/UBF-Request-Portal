@@ -105,10 +105,10 @@
     "submittedByName": "Susan Abonyo",
     "submittedByTitle": "Administration Officer",
     "submittedByRole": "Admin Officer",
-    "status": "Pending Review",
+    "status": "Rejected",
     "attachments": [],
     "createdAt": "2026-05-13T06:59:33.236Z",
-    "updatedAt": "2026-05-13T06:59:33.236Z",
+    "updatedAt": "2026-05-13T06:59:59.715Z",
     "approval": {
       "review": {
         "status": "Pending",
@@ -140,6 +140,14 @@
         "byTitle": "Administration Officer",
         "at": "2026-05-13T06:59:33.236Z",
         "note": "Initial submission"
+      },
+      {
+        "action": "Rejected",
+        "by": "s.abonyo@ugandabiodiversityfund.org",
+        "byName": "Susan Abonyo",
+        "byTitle": "Administration Officer",
+        "at": "2026-05-13T06:59:59.715Z",
+        "note": "get another approver "
       }
     ]
   }
