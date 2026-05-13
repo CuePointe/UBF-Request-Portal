@@ -150,5 +150,72 @@
         "note": "get another approver "
       }
     ]
+  },
+  {
+    "id": "UBF-20260513-B8B68D",
+    "activityCode": "ee",
+    "description": "ppe",
+    "specification": "Protective  cover",
+    "quantity": "5",
+    "unit": "",
+    "dateRequired": "2026-05-13",
+    "locationOfWork": "Kampala",
+    "contractPeriod": "1 month",
+    "accountCode": "",
+    "accountName": "TEPU_001",
+    "donorCode": "",
+    "donorName": "TEPU",
+    "department": "Programmes",
+    "budgetCode": "400",
+    "estimatedCost": "",
+    "currency": "UGX",
+    "submittedBy": "o.atuhaire@ugandabiodiversityfund.org",
+    "submittedByName": "Owen Atuhaire",
+    "submittedByTitle": "Staff",
+    "submittedByRole": "Staff",
+    "status": "Pending Review",
+    "attachments": [
+      {
+        "path": "attachments/1778665739911_request_PPE.doc",
+        "downloadUrl": "https://github.com/CuePointe/UBF-Request-Portal/blob/main/attachments/1778665739911_request_PPE.doc",
+        "name": "request PPE.doc",
+        "size": 102912
+      }
+    ],
+    "createdAt": "2026-05-13T09:49:01.866Z",
+    "updatedAt": "2026-05-13T09:49:01.866Z",
+    "approval": {
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "o.atuhaire@ugandabiodiversityfund.org",
+        "byName": "Owen Atuhaire",
+        "byTitle": "Staff",
+        "at": "2026-05-13T09:49:01.866Z",
+        "note": "Initial submission"
+      }
+    ]
   }
 ]
