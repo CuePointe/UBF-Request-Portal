@@ -21,10 +21,10 @@
     "submittedByName": "Tom Otieno",
     "submittedByTitle": "Staff",
     "submittedByRole": "Staff",
-    "status": "Reviewed",
+    "status": "Cleared",
     "attachments": [],
     "createdAt": "2026-05-12T10:54:31.944Z",
-    "updatedAt": "2026-05-13T06:52:21.616Z",
+    "updatedAt": "2026-05-13T06:53:53.408Z",
     "approval": {
       "review": {
         "status": "Reviewed",
@@ -34,10 +34,10 @@
         "note": ""
       },
       "clearance": {
-        "status": "Pending",
-        "by": "",
-        "byName": "",
-        "at": "",
+        "status": "Cleared",
+        "by": "w.nabatanzi@ugandabiodiversityfund.org",
+        "byName": "Winnie Nabatanzi",
+        "at": "2026-05-13T06:53:53.408Z",
         "note": ""
       },
       "approval": {
@@ -63,6 +63,14 @@
         "byName": "Susan Abonyo",
         "byTitle": "Administration Officer",
         "at": "2026-05-13T06:52:21.616Z",
+        "note": ""
+      },
+      {
+        "action": "Cleared",
+        "by": "w.nabatanzi@ugandabiodiversityfund.org",
+        "byName": "Winnie Nabatanzi",
+        "byTitle": "Finance and Administration Manager",
+        "at": "2026-05-13T06:53:53.408Z",
         "note": ""
       }
     ]
