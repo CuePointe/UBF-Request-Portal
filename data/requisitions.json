@@ -173,7 +173,7 @@
     "submittedByName": "Owen Atuhaire",
     "submittedByTitle": "Staff",
     "submittedByRole": "Staff",
-    "status": "Pending Review",
+    "status": "Rejected",
     "attachments": [
       {
         "path": "attachments/1778665739911_request_PPE.doc",
@@ -183,7 +183,7 @@
       }
     ],
     "createdAt": "2026-05-13T09:49:01.866Z",
-    "updatedAt": "2026-05-13T09:49:01.866Z",
+    "updatedAt": "2026-05-13T19:38:42.756Z",
     "approval": {
       "review": {
         "status": "Pending",
@@ -215,6 +215,14 @@
         "byTitle": "Staff",
         "at": "2026-05-13T09:49:01.866Z",
         "note": "Initial submission"
+      },
+      {
+        "action": "Rejected",
+        "by": "s.abonyo@ugandabiodiversityfund.org",
+        "byName": "Susan Abonyo",
+        "byTitle": "Administration Officer",
+        "at": "2026-05-13T19:38:42.756Z",
+        "note": ""
       }
     ]
   }
