@@ -30,15 +30,19 @@
     DB_PATH      : 'data/requisitions.json',
     USERS_PATH   : 'data/users.json',
     BRANCH       : 'main',
-    // Do not hardcode the token here anymore
-    SHARED_TOKEN : localStorage.getItem('github_token') || prompt("Please enter your GitHub Personal Access Token:"),
+    // Pull the token dynamically from browser memory
+    SHARED_TOKEN : localStorage.getItem('ubf_gh_token'),
     SESSION_KEY  : 'ubf_session',
     PASS_EXPIRY_DAYS: 90
 };
 
-// Save the token locally in the browser cache so the user doesn't type it every time
-if (CONFIG.SHARED_TOKEN) {
-    localStorage.setItem('github_token', CONFIG.SHARED_TOKEN);
+// Prompt for the token if it's not saved locally yet
+if (!CONFIG.SHARED_TOKEN) {
+    var userToken = prompt("Please enter your fresh GitHub Personal Access Token:");
+    if (userToken) {
+        localStorage.setItem('ubf_gh_token', userToken.trim());
+        CONFIG.SHARED_TOKEN = userToken.trim();
+    }
 }
 
   /* ─────────────────────────────────────────────
