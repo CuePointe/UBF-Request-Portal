@@ -1,1 +1,70 @@
-[]
+[
+  {
+    "id": "UBF-20260514-9F10E2",
+    "formType": "request",
+    "data": {
+      "activityCode": "UBF ACT-O1",
+      "description": "Rakes",
+      "specification": "Plastic",
+      "quantity": "1",
+      "dateRequired": "2026-05-15",
+      "locationOfWork": "Office",
+      "contractPeriod": "1 month",
+      "accountCode": "",
+      "accountName": "UBF Other Incomee",
+      "donorCode": "",
+      "donorName": "Internally generated funds",
+      "department": "Administration",
+      "budgetCode": "BUD-2026-Q3"
+    },
+    "submittedBy": "t.otieno@ugandabiodiversityfund.org",
+    "submittedByName": "Tom Otieno",
+    "submittedByTitle": "Staff and Developer",
+    "submittedByRole": "Developer",
+    "status": "Pending",
+    "attachments": [],
+    "comments": [],
+    "createdAt": "2026-05-14T11:04:11.616Z",
+    "updatedAt": "2026-05-14T11:04:11.616Z",
+    "approval": {
+      "preparation": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "t.otieno@ugandabiodiversityfund.org",
+        "byName": "Tom Otieno",
+        "byTitle": "Staff and Developer",
+        "at": "2026-05-14T11:04:11.616Z",
+        "note": "Initial submission"
+      }
+    ]
+  }
+]
