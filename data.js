@@ -30,7 +30,7 @@
     DB_PATH      : 'data/requisitions.json',
     USERS_PATH   : 'data/users.json',
     BRANCH       : 'main',
-    SHARED_TOKEN : 'REPLACE_WITH_YOUR_GHP_TOKEN',  /* ← paste your ghp_... token here */
+    SHARED_TOKEN : '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',  /* ← paste your ghp_... token here */
     SESSION_KEY  : 'ubf_session',
     PASS_EXPIRY_DAYS: 90
   };
