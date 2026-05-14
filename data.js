@@ -44,16 +44,16 @@
       name: 'Susan Abonyo', role: 'Admin Officer', title: 'Administration Officer'
     },
     'd.okullu@ugandabiodiversityfund.org': {
-      name: 'David Okullu', role: 'Staff', title: 'Staff'
+      name: 'David Okullu', role: 'Staff', title: 'M&E Officer'
     },
     'p.musiime@ugandabiodiversityfund.org': {
-      name: 'Posiano Musiime', role: 'Staff', title: 'Staff'
+      name: 'Posiano Musiime', role: 'Staff', title: 'Programs Officer'
     },
     'o.atuhaire@ugandabiodiversityfund.org': {
-      name: 'Owen Atuhaire', role: 'Staff', title: 'Staff'
+      name: 'Owen Atuhaire', role: 'Staff', title: 'Project Officer'
     },
     't.otieno@ugandabiodiversityfund.org': {
-      name: 'Tom Otieno', role: 'Staff', title: 'Staff'
+      name: 'Thomas Otieno', role: 'Staff', title: 'Office Assistant'
     }
   };
 
