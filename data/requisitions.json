@@ -1,20 +1,20 @@
 [
   {
-    "id": "UBF-20260514-808B52",
+    "id": "UBF-20260514-41A788",
     "formType": "request",
     "data": {
-      "activityCode": "ubf",
+      "activityCode": "ubf01",
       "description": "rakes",
       "specification": "plastic",
       "quantity": "1",
-      "dateRequired": "2026-05-15",
+      "dateRequired": "2026-05-14",
       "locationOfWork": "office",
-      "contractPeriod": "30 days",
+      "contractPeriod": "30",
       "accountCode": "",
-      "accountName": "UBF Other Income",
+      "accountName": "ubfoi",
       "donorCode": "",
-      "donorName": "Internally generated funds",
-      "department": "Communications",
+      "donorName": "igf",
+      "department": "Administration",
       "budgetCode": "bud-q3-2026"
     },
     "submittedBy": "t.otieno@ugandabiodiversityfund.org",
@@ -24,8 +24,8 @@
     "status": "Pending",
     "attachments": [],
     "comments": [],
-    "createdAt": "2026-05-14T15:52:32.885Z",
-    "updatedAt": "2026-05-14T15:52:32.885Z",
+    "createdAt": "2026-05-14T20:08:53.002Z",
+    "updatedAt": "2026-05-14T20:08:53.002Z",
     "approval": {
       "preparation": {
         "status": "Pending",
@@ -62,7 +62,7 @@
         "by": "t.otieno@ugandabiodiversityfund.org",
         "byName": "Thomas Otieno",
         "byTitle": "Staff",
-        "at": "2026-05-14T15:52:32.885Z",
+        "at": "2026-05-14T20:08:53.002Z",
         "note": "Initial submission"
       }
     ]
