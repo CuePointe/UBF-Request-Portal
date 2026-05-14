@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UBF — Accountability Form</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .ubf-doc { background:var(--white); border-radius:var(--radius-md); box-shadow:var(--shadow-md); overflow:hidden; max-width:960px; margin:0 auto; }
+    .doc-header { display:grid; grid-template-columns:80px 1fr 140px; align-items:center; padding:1rem 1.5rem; border-bottom:3px solid var(--ubf-blue-darker); gap:1rem; }
+    .doc-header-logo { width:68px; height:68px; object-fit:contain; }
+    .doc-header-centre { text-align:center; }
+    .doc-header-centre .org-name { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--ubf-blue-darker); }
+    .doc-header-centre .form-name { font-size:1rem; font-weight:700; color:var(--gray-900); margin:0.2rem 0 0; font-family:var(--font-body); text-transform:uppercase; }
+    .doc-table { width:100%; border-collapse:collapse; }
+    .doc-table th, .doc-table td { border:1px solid var(--gray-300); padding:0.5rem 0.75rem; vertical-align:middle; font-size:0.875rem; }
+    .doc-table th { background:var(--ubf-blue-light); color:var(--ubf-blue-darker); font-weight:700; font-size:0.75rem; white-space:nowrap; font-family:var(--font-body); }
+    .doc-table td input, .doc-table td select, .doc-table td textarea { width:100%; border:none; outline:none; font-family:var(--font-body); font-size:0.875rem; color:var(--gray-900); background:transparent; }
+    .doc-table td input:focus { background:#fffde7; border-radius:2px; }
+    .total-row { background:var(--ubf-blue-light); font-weight:700; }
+    .section-header { background:var(--ubf-blue-darker); color:var(--white); font-weight:700; font-size:0.8rem; padding:0.5rem 1rem; text-transform:uppercase; letter-spacing:0.05em; }
+    .balance-positive { color:#14532d; font-weight:700; }
+    .balance-negative { color:var(--red); font-weight:700; }
+    .doc-footer { padding:1.25rem 1.5rem; background:var(--gray-100); display:flex; align-items:center; justify-content:flex-end; gap:1rem; border-top:1px solid var(--gray-200); }
+    .approval-cell-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--ubf-blue-darker); margin-bottom:0.3rem; }
+    .approval-cell-name { font-weight:700; font-size:0.875rem; }
+    .approval-cell-title { font-size:0.75rem; color:var(--gray-500); }
+    .approval-cell-status { margin-top:0.5rem; display:inline-block; padding:0.18rem 0.6rem; border-radius:999px; font-size:0.68rem; font-weight:700; text-transform:uppercase; }
+    .status-submitting { background:var(--ubf-blue-light); color:var(--ubf-blue-darker); }
+    .status-awaiting { background:var(--amber-light); color:#92400e; }
+    .notes-box { background:var(--ubf-blue-pale); border:1px solid var(--ubf-blue-light); border-radius:var(--radius-sm); padding:0.75rem 1rem; font-size:0.78rem; color:var(--ubf-blue-darker); margin:1rem 1.5rem; }
+    .notes-box ol { padding-left:1.25rem; margin:0; }
+    .notes-box li { margin-bottom:0.25rem; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="navbar-brand" href="dashboard.html">
+    <div class="navbar-logo">
+      <img src="ubf-logo.jpg" alt="UBF Logo"
+           onerror="this.style.display='none';this.parentElement.setAttribute('data-fallback','true');" />
+    </div>
+    <div class="navbar-title">
+      <span class="org">Uganda Biodiversity Fund</span>
+      <span class="portal">Procurement System</span>
+    </div>
+  </a>
+  <ul class="navbar-nav">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="form.html">Request Form</a></li>
+    <li><a href="travel-plan.html">Travel Plan</a></li>
+    <li><a href="accountability.html" class="active">Accountability</a></li>
+    <li><a href="history.html">History</a></li>
+  </ul>
+  <div class="navbar-user">
+    <div class="navbar-user-info">
+      <span class="user-email" id="nav-user-name">Loading…</span>
+      <span class="role-badge" id="nav-user-role">—</span>
+    </div>
+    <button id="btn-logout">Logout</button>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <div id="global-error-banner"   class="banner"></div>
+  <div id="global-success-banner" class="banner"></div>
+
+  <div class="page-header">
+    <h1>Advance Accountability &amp; Expense Report</h1>
+    <p>Uganda Biodiversity Fund — must be submitted within 7 days after end of trip or activity</p>
+  </div>
+
+  <div class="ubf-doc">
+  <form id="accountability-form" novalidate autocomplete="off">
+
+    <!-- Document Header -->
+    <div class="doc-header">
+      <img class="doc-header-logo" src="ubf-logo.jpg" alt="Uganda Biodiversity Fund Logo"
+           onerror="this.style.display='none';" />
+      <div class="doc-header-centre">
+        <div class="org-name">Uganda Biodiversity Fund</div>
+        <div class="form-name">Advance Accountability and Expense Report</div>
+      </div>
+      <div style="text-align:right;font-size:0.72rem;color:var(--gray-500);">
+        Ref No:<br/><strong id="acc-ref-display">Auto-assigned</strong>
+      </div>
+    </div>
+
+    <!-- Staff Info -->
+    <div style="padding:1.25rem 1.5rem 0;">
+    <table class="doc-table">
+      <tr>
+        <th>Employee Name <span style="color:var(--red)">*</span></th>
+        <td><input type="text" id="acc-employee-name" readonly /></td>
+        <th>Date</th>
+        <td><input type="date" id="acc-date" name="accDate" /></td>
+      </tr>
+      <tr>
+        <th>Dates of Travel / Activity <span style="color:var(--red)">*</span></th>
+        <td><input type="text" id="acc-travel-dates" name="travelDates"
+                   placeholder="e.g. 22nd October to 1st November 2025" required /></td>
+        <th>Department</th>
+        <td><input type="text" id="acc-department" name="department"
+                   placeholder="e.g. USAID-Project / Administration" /></td>
+      </tr>
+      <tr>
+        <th>Purpose of Travel / Activity <span style="color:var(--red)">*</span></th>
+        <td colspan="3">
+          <input type="text" id="acc-purpose" name="purpose"
+                 placeholder="e.g. 24th REDLAC Congress in Ecuador" required />
+        </td>
+      </tr>
+    </table>
+    </div>
+
+    <!-- Details of Expenses -->
+    <div style="padding:1rem 1.5rem 0;">
+    <div class="section-header">Details of Expenses</div>
+    <div style="font-size:0.75rem;color:var(--gray-500);padding:0.4rem 0.75rem;
+                border:1px solid var(--gray-300);border-top:none;font-style:italic;">
+      Expenses must be written in chronological order and receipts/supports numbered and arranged accordingly.
+    </div>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th style="width:110px;">Account Code</th>
+          <th style="width:110px;">Date</th>
+          <th>Brief Explanation of Expenses</th>
+          <th style="width:70px;">Ref No.</th>
+          <th style="width:110px;">Budgeted Amount</th>
+          <th style="width:120px;">Actual Expenditure</th>
+          <th style="width:100px;">Balance</th>
+        </tr>
+      </thead>
+      <tbody id="expenses-table-body">
+        <!-- 12 rows generated by script -->
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="4" style="text-align:right;font-weight:700;">Total Expenses</td>
+          <td><input type="number" id="acc-total-budgeted"     step="0.01" readonly style="font-weight:700;" /></td>
+          <td><input type="number" id="acc-total-actual"       step="0.01" readonly style="font-weight:700;" /></td>
+          <td><input type="number" id="acc-total-balance"      step="0.01" readonly style="font-weight:700;" /></td>
+        </tr>
+        <tr>
+          <td colspan="5" style="text-align:right;font-weight:600;">Advance Received</td>
+          <td colspan="2">
+            <input type="number" id="acc-advance-received" name="advanceReceived"
+                   step="0.01" min="0" placeholder="Enter advance amount" />
+          </td>
+        </tr>
+        <tr id="balance-due-employer" style="display:none;">
+          <td colspan="5" style="text-align:right;font-size:0.82rem;">
+            Advance issued greater than expenses (balance due to employer)
+          </td>
+          <td colspan="2">
+            <input type="number" id="acc-balance-employer" step="0.01" readonly
+                   class="balance-positive" />
+          </td>
+        </tr>
+        <tr id="balance-due-employee" style="display:none;">
+          <td colspan="5" style="text-align:right;font-size:0.82rem;">
+            Advance issued less than expenses (balance due to employee)
+          </td>
+          <td colspan="2">
+            <input type="number" id="acc-balance-employee" step="0.01" readonly
+                   class="balance-negative" />
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+
+    <!-- Authorisation Chain -->
+    <div style="padding:1rem 1.5rem 0;">
+    <table class="doc-table">
+      <tr>
+        <!-- Submitted By -->
+        <td style="width:33%;">
+          <div class="approval-cell-label">Submitted by (Employee's Signature &amp; Date):</div>
+          <div class="approval-cell-name"  id="acc-submitter-name">—</div>
+          <div class="approval-cell-title" id="acc-submitter-title">—</div>
+          <span class="approval-cell-status status-submitting">Submitting</span>
+        </td>
+        <!-- Reviewed By — Head of Department -->
+        <td style="width:33%;">
+          <div class="approval-cell-label">Reviewed by (Head of Department):</div>
+          <div class="approval-cell-name">Susan Abonyo</div>
+          <div class="approval-cell-title">Administration Officer</div>
+          <span class="approval-cell-status status-awaiting">Awaiting Review</span>
+        </td>
+        <!-- Finance Department -->
+        <td style="width:33%;">
+          <div class="approval-cell-label">To be filled by Finance Department:</div>
+          <div style="font-size:0.78rem;margin-bottom:0.4rem;">
+            Accountability reviewed by:<br/>
+            <strong>Winnie Nabatanzi</strong><br/>
+            <span style="color:var(--gray-500);font-size:0.72rem;">Finance and Administration Manager</span>
+          </div>
+          <span class="approval-cell-status status-awaiting">Awaiting</span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <div class="approval-cell-label">Accountability approved by:</div>
+          <div class="approval-cell-name">Ivan Amanigaruhanga</div>
+          <div class="approval-cell-title">Executive Director</div>
+          <span class="approval-cell-status status-awaiting">Awaiting Approval</span>
+        </td>
+      </tr>
+    </table>
+    </div>
+
+    <!-- Attachments -->
+    <div style="padding:1rem 1.5rem 0;">
+    <table class="doc-table">
+      <tr>
+        <th>Attach Receipts / Supporting Documents</th>
+        <td>
+          <input type="file" id="acc-attachments" name="attachments"
+                 multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" />
+          <div class="file-info" id="acc-attachment-info"></div>
+        </td>
+      </tr>
+    </table>
+    </div>
+
+    <!-- Notes -->
+    <div class="notes-box">
+      <strong>Notes:</strong>
+      <ol>
+        <li>The Advance Accountability and Expense Form must be submitted within 7 days after the end of the trip or activity.</li>
+        <li>Supports or receipts submitted must be in original copies and arranged in the order they were written on the report.</li>
+        <li>If space for the expenses is not enough, new sheets can be prepared and attached as prior pages to this report.</li>
+        <li>Cash balances not spent must be returned to cashier who will make the banking immediately and attach bank deposit slip.</li>
+      </ol>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="doc-footer">
+      <div id="acc-loading" style="display:none;">
+        <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--ubf-blue-dark);">
+          <div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0;
+               border-color:var(--ubf-blue-light);border-top-color:var(--ubf-blue-dark);"></div>
+          Saving…
+        </div>
+      </div>
+      <a href="dashboard.html" class="btn btn-secondary">Cancel</a>
+      <button type="submit" id="btn-submit-accountability" class="btn btn-primary btn-lg">
+        Submit Accountability Form
+      </button>
+    </div>
+
+  </form>
+  </div>
+
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+<script>
+(function() {
+  /* Build 12 expense rows */
+  var tbody = document.getElementById('expenses-table-body');
+  for (var i = 0; i < 12; i++) {
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><input type="text"   class="exp-input" data-col="accountCode"  name="accCode_'   + i + '" placeholder="Code" /></td>' +
+      '<td><input type="date"   class="exp-input" data-col="date"          name="expDate_'   + i + '" /></td>' +
+      '<td><input type="text"   class="exp-input" data-col="explanation"   name="expDesc_'   + i + '" placeholder="Brief description" /></td>' +
+      '<td><input type="text"   class="exp-input" data-col="refNo"         name="refNo_'     + i + '" placeholder="Ref" /></td>' +
+      '<td><input type="number" class="exp-input" data-col="budgeted"      name="budgeted_'  + i + '" step="0.01" min="0" /></td>' +
+      '<td><input type="number" class="exp-input" data-col="actual"        name="actual_'    + i + '" step="0.01" min="0" /></td>' +
+      '<td><input type="number" class="exp-input" data-col="balance"       name="balance_'   + i + '" step="0.01" readonly /></td>';
+    tbody.appendChild(tr);
+  }
+
+  /* Calculate row balance and column totals */
+  function recalc() {
+    var totalBudgeted = 0, totalActual = 0, totalBalance = 0;
+    tbody.querySelectorAll('tr').forEach(function(row) {
+      var b   = parseFloat(row.querySelector('[data-col="budgeted"]').value) || 0;
+      var a   = parseFloat(row.querySelector('[data-col="actual"]').value)   || 0;
+      var bal = b - a;
+      row.querySelector('[data-col="balance"]').value = bal !== 0 ? bal.toFixed(2) : '';
+      totalBudgeted += b;
+      totalActual   += a;
+      totalBalance  += bal;
+    });
+    document.getElementById('acc-total-budgeted').value = totalBudgeted.toFixed(2);
+    document.getElementById('acc-total-actual').value   = totalActual.toFixed(2);
+    document.getElementById('acc-total-balance').value  = totalBalance.toFixed(2);
+    calcAdvanceBalance();
+  }
+
+  function calcAdvanceBalance() {
+    var advance = parseFloat(document.getElementById('acc-advance-received').value) || 0;
+    var actual  = parseFloat(document.getElementById('acc-total-actual').value)     || 0;
+    var diff    = advance - actual;
+    var rowEmp  = document.getElementById('balance-due-employer');
+    var rowEmpee = document.getElementById('balance-due-employee');
+    if (diff > 0) {
+      document.getElementById('acc-balance-employer').value = diff.toFixed(2);
+      rowEmp.style.display   = '';
+      rowEmpee.style.display = 'none';
+    } else if (diff < 0) {
+      document.getElementById('acc-balance-employee').value = Math.abs(diff).toFixed(2);
+      rowEmpee.style.display = '';
+      rowEmp.style.display   = 'none';
+    } else {
+      rowEmp.style.display   = 'none';
+      rowEmpee.style.display = 'none';
+    }
+  }
+
+  tbody.addEventListener('input', recalc);
+  document.getElementById('acc-advance-received').addEventListener('input', calcAdvanceBalance);
+})();
+</script>
+</body>
+</html>

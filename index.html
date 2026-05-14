@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UBF — Logistics & Procurement System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="login-page">
+  <div class="login-card">
+
+    <!-- Header -->
+    <div class="login-header">
+      <div class="login-logo">
+        <img src="ubf-logo.jpg" alt="Uganda Biodiversity Fund Logo"
+             onerror="this.style.display='none';this.parentElement.setAttribute('data-fallback','true');" />
+      </div>
+      <h1>Logistics &amp; Procurement System</h1>
+      <p>Uganda Biodiversity Fund &mdash; <em>For now &amp; the future</em></p>
+    </div>
+
+    <!-- Login Body -->
+    <div class="login-body">
+
+      <div id="login-error"></div>
+
+      <!-- Password Change Panel (hidden by default) -->
+      <div id="change-password-panel" style="display:none;">
+        <div style="background:var(--amber-light);border:1px solid var(--amber);border-radius:var(--radius-sm);
+                    padding:0.75rem 1rem;font-size:0.83rem;color:#92400e;margin-bottom:1rem;">
+          ⚠️ You must set a new password before continuing.
+          Passwords expire every 90 days.
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="input-new-password">New Password</label>
+          <input type="password" id="input-new-password"
+                 placeholder="Minimum 8 characters" minlength="8" />
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="input-confirm-password">Confirm New Password</label>
+          <input type="password" id="input-confirm-password"
+                 placeholder="Repeat your new password" />
+        </div>
+        <button type="button" id="btn-set-password" class="btn btn-primary"
+                style="width:100%;padding:0.8rem;">
+          Set Password &amp; Log In
+        </button>
+        <button type="button" id="btn-cancel-change"
+                style="width:100%;margin-top:0.5rem;background:none;border:none;
+                       color:var(--ubf-blue-dark);cursor:pointer;font-size:0.85rem;padding:0.4rem;">
+          ← Back to login
+        </button>
+      </div>
+
+      <!-- Main Login Form -->
+      <form id="login-form" autocomplete="off" novalidate>
+
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="input-email">UBF Work Email</label>
+          <input type="email" id="input-email" name="email"
+                 placeholder="yourname@ugandabiodiversityfund.org"
+                 autocomplete="email" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom:0.5rem;">
+          <label for="input-password">Password</label>
+          <div style="position:relative;">
+            <input type="password" id="input-password" name="password"
+                   placeholder="Enter your password"
+                   autocomplete="current-password" required
+                   style="padding-right:2.5rem;" />
+            <button type="button" id="btn-toggle-password"
+                    style="position:absolute;right:0.6rem;top:50%;transform:translateY(-50%);
+                           background:none;border:none;cursor:pointer;color:var(--gray-500);
+                           font-size:0.85rem;">
+              👁
+            </button>
+          </div>
+        </div>
+
+        <div style="text-align:right;margin-bottom:1.25rem;">
+          <span style="font-size:0.78rem;color:var(--ubf-blue-dark);cursor:pointer;"
+                id="forgot-password-link">
+            Forgot password?
+          </span>
+        </div>
+
+        <button type="submit" id="btn-login">Log In</button>
+
+      </form>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <p>UBF Logistics &amp; Procurement System v2.0</p>
+      <p style="margin-top:0.3rem;">
+        For access issues contact:
+        <a href="mailto:t.otieno@ugandabiodiversityfund.org">
+          t.otieno@ugandabiodiversityfund.org
+        </a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
