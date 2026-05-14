@@ -49,7 +49,7 @@ if (!CONFIG.SHARED_TOKEN) {
      2. ROLE DEFINITIONS
   ───────────────────────────────────────────── */
   /* Roles that can see ALL requisitions */
-  var ELEVATED_ROLES = ['Admin Officer', 'Finance Officer', 'FAM', 'ED', 'Developer'];
+  var ELEVATED_ROLES = ['Admin Officer', 'Finance Officer', 'FAM', 'ED'];
 
   /* What each role can action and what status results */
   var ROLE_ACTIONS = {
