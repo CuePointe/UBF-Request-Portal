@@ -399,6 +399,7 @@ if (!CONFIG.SHARED_TOKEN) {
   async function submitRequisition(formData, files, formType) {
     var session     = requireSession();
     var db          = await readDatabase();
+    db.records      = db.records || [];
     var attachments = [];
     if (files && files.length > 0) {
       attachments = await uploadAllAttachments(Array.from(files));
@@ -440,7 +441,8 @@ if (!CONFIG.SHARED_TOKEN) {
 
   async function updateRequisitionStatus(id, newStatus, note) {
     var session = requireSession();
-    var db      = await readDatabase();
+    var db        = await readDatabase();
+    db.records    = db.records || [];
     var idx     = db.records.findIndex(function (r) { return r.id === id; });
     if (idx === -1) throw new Error('Requisition not found: ' + id);
 
@@ -487,6 +489,7 @@ if (!CONFIG.SHARED_TOKEN) {
   async function editRequisition(id, updatedFormData, files) {
     var session = requireSession();
     var db      = await readDatabase();
+    db.records = db.records || [];
     var idx     = db.records.findIndex(function (r) { return r.id === id; });
     if (idx === -1) throw new Error('Requisition not found: ' + id);
 
@@ -561,6 +564,7 @@ if (!CONFIG.SHARED_TOKEN) {
   async function addReply(requisitionId, commentId, replyText) {
     var session = requireSession();
     var db      = await readDatabase();
+    db.records = db.records || [];
     var idx     = db.records.findIndex(function (r) { return r.id === requisitionId; });
     if (idx === -1) throw new Error('Requisition not found.');
 
