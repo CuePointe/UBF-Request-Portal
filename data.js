@@ -390,9 +390,9 @@ if (!CONFIG.SHARED_TOKEN) {
   async function getAllRequisitions() {
     var session = requireSession();
     var db      = await readDatabase();
-    var visible = filterByRole(db.records, session);
+    var records = db.records || [];
+    var visible = filterByRole(records, session);
     return visible.sort(function (a, b) {
-      return new Date(b.createdAt) - new Date(a.createdAt);
     });
   }
 
@@ -589,7 +589,7 @@ if (!CONFIG.SHARED_TOKEN) {
      14. DASHBOARD STATS
   ───────────────────────────────────────────── */
   async function getDashboardStats() {
-    var records = await getAllRequisitions();
+    var records = (await getAllRequisitions()) || [];
     var s = { total: records.length, pending: 0, prepared: 0, reviewed: 0, cleared: 0, approved: 0, rejected: 0 };
     records.forEach(function (r) {
       var st = (r.status || '').toLowerCase();
