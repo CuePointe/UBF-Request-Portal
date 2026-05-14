@@ -30,10 +30,16 @@
     DB_PATH      : 'data/requisitions.json',
     USERS_PATH   : 'data/users.json',
     BRANCH       : 'main',
-    SHARED_TOKEN : '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',  /* ← paste your ghp_... token here */
+    // Do not hardcode the token here anymore
+    SHARED_TOKEN : localStorage.getItem('github_token') || prompt("Please enter your GitHub Personal Access Token:"),
     SESSION_KEY  : 'ubf_session',
     PASS_EXPIRY_DAYS: 90
-  };
+};
+
+// Save the token locally in the browser cache so the user doesn't type it every time
+if (CONFIG.SHARED_TOKEN) {
+    localStorage.setItem('github_token', CONFIG.SHARED_TOKEN);
+}
 
   /* ─────────────────────────────────────────────
      2. ROLE DEFINITIONS
