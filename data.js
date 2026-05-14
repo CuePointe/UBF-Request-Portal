@@ -377,7 +377,9 @@ if (!CONFIG.SHARED_TOKEN) {
   /* ─────────────────────────────────────────────
      11. ROLE-BASED FILTERING
   ───────────────────────────────────────────── */
-  function filterByRole(records, session) {
+ function filterByRole(records, session) {
+    if (!records || !Array.isArray(records)) return [];
+    if (!session) return [];
     if (canSeeAll(session.role)) return records;
     return records.filter(function (r) {
       return r.submittedBy && r.submittedBy.toLowerCase() === session.email.toLowerCase();
@@ -393,6 +395,7 @@ if (!CONFIG.SHARED_TOKEN) {
     var records = db.records || [];
     var visible = filterByRole(records, session);
     return visible.sort(function (a, b) {
+      return new Date(b.createdAt) - new Date(a.createdAt);
     });
   }
 
