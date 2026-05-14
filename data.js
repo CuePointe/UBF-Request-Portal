@@ -401,8 +401,9 @@ if (!CONFIG.SHARED_TOKEN) {
 
   async function submitRequisition(formData, files, formType) {
     var session     = requireSession();
-    var db          = await readDatabase();
-    db.records      = db.records || [];
+    var dbResult    = await readDatabase();
+    var records     = Array.isArray(dbResult.records) ? dbResult.records : [];
+    var sha         = dbResult.sha;
     var attachments = [];
     if (files && files.length > 0) {
       attachments = await uploadAllAttachments(Array.from(files));
@@ -436,8 +437,8 @@ if (!CONFIG.SHARED_TOKEN) {
         note   : 'Initial submission'
       }]
     };
-    db.records.push(rec);
-    await writeDatabase(db.records, db.sha,
+    records.push(rec);
+await writeDatabase(records, sha,
       'New ' + (formType || 'request') + ' ' + rec.id + ' by ' + session.email);
     return rec;
   }
