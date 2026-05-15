@@ -194,7 +194,29 @@ function commentHandlers(){
 /* ══════════════════════════════════
    LOGIN PAGE
 ══════════════════════════════════ */
-function initLogin(){
+function initLogin(){function initLogin(if (!localStorage.getItem('ubf_gatekeeper_token'))){
+  if(!$id('login-form')) return;
+
+  // --- ADD THIS BLOCK RIGHT HERE (Inside the function) ---
+  if (!localStorage.getItem('ubf_gatekeeper_token')) {
+    var token = prompt("System Setup: Please enter the System Access Key provided by the Administrator.");
+    if (token && token.trim().startsWith('ghp_')) {
+      localStorage.setItem('ubf_gatekeeper_token', token.trim());
+      location.reload(); 
+      return;
+    } else {
+      alert("Invalid or missing Key. Access denied.");
+      return;
+    }
+  }
+  // --- END OF ADDED BLOCK ---
+
+  if(DS.isAuthenticated()){go('dashboard.html');return;}
+  var form=$id('login-form'),cp=$id('change-password-panel');
+  var ei=$id('input-email'),pi=$id('input-password'),er=$id('login-error'),bl=$id('btn-login');
+  var _pu=null;
+  
+  // ... the rest of your code continues ...
   if(!$id('login-form'))return;
   if(DS.isAuthenticated()){go('dashboard.html');return;}
   var form=$id('login-form'),cp=$id('change-password-panel');
