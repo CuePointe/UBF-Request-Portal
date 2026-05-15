@@ -19,15 +19,15 @@
      1. CONFIGURATION
   ───────────────────────────────────────────── */
   var CONFIG = {
-    API_BASE        : 'https://api.github.com',
-    OWNER           : 'CuePointe',
-    REPO            : 'UBF-Request-Portal',
-    DB_PATH         : 'data/requisitions.json',
-    USERS_PATH      : 'data/users.json',
-    BRANCH          : 'main',
-    SHARED_TOKEN    : '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',
-    SESSION_KEY     : 'ubf_session',
-    PASS_EXPIRY_DAYS: 90
+    API_BASE         : 'https://api.github.com',
+    OWNER            : 'CuePointe',
+    REPO             : 'UBF-Request-Portal',
+    DB_PATH          : 'data/requisitions.json',
+    USERS_PATH       : 'data/users.json',
+    BRANCH           : 'main',
+    SHARED_TOKEN     : localStorage.getItem('ubf_gatekeeper_token') || '', // Pulls from browser memory
+    SESSION_KEY      : 'ubf_session',
+    PASS_EXPIRY_DAYS : 90
   };
 
   /* ─────────────────────────────────────────────
