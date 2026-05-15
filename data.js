@@ -25,7 +25,8 @@
     DB_PATH         : 'data/requisitions.json',
     USERS_PATH      : 'data/users.json',
     BRANCH          : 'main',
-    SHARED_TOKEN    : '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',
+    SHARED_TOKEN    : '
+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',
     SESSION_KEY     : 'ubf_session',
     PASS_EXPIRY_DAYS: 90
   };
