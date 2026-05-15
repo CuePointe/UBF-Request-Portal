@@ -1,3 +1,11 @@
+if (!localStorage.getItem('ubf_gatekeeper_token')) {
+    const backupToken = prompt("CRITICAL SETUP: Please paste your NEW GitHub Token (ghp_...) here:");
+    if (backupToken && backupToken.includes('ghp_')) {
+        localStorage.setItem('ubf_gatekeeper_token', backupToken.trim());
+        alert("Token saved. The page will now reload.");
+        location.reload();
+    }
+}
 (function(){
 'use strict';
 if(!window.DataService){console.error('data.js must load before script.js');return;}
