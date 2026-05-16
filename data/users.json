@@ -24,9 +24,9 @@
     "name": "Susan Abonyo",
     "role": "Admin Officer",
     "title": "Administration Officer",
-    "passwordHash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
-    "passwordExpiry": "2026-12-31",
-    "mustChangePassword": true,
+    "passwordHash": "6200753988a2823d59fad943e44ed2fc5425a301b4e574171e41121e8fcb9492",
+    "passwordExpiry": "2026-08-14",
+    "mustChangePassword": false,
     "active": true
   },
   {
