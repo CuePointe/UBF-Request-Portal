@@ -23,9 +23,19 @@
     "submittedByRole": "Staff",
     "status": "Pending",
     "attachments": [],
-    "comments": [],
+    "comments": [
+      {
+        "id": "CMT-1779003625586",
+        "by": "t.otieno@ugandabiodiversityfund.org",
+        "byName": "Thomas Otieno",
+        "byRole": "Staff",
+        "text": "I urgently need this item, pls consider and have it sorted soon. \n\nThanks",
+        "at": "2026-05-17T07:40:25.586Z",
+        "replies": []
+      }
+    ],
     "createdAt": "2026-05-14T20:08:53.002Z",
-    "updatedAt": "2026-05-14T20:08:53.002Z",
+    "updatedAt": "2026-05-17T07:40:25.586Z",
     "approval": {
       "preparation": {
         "status": "Pending",
