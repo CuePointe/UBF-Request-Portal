@@ -219,5 +219,70 @@
         "note": "Initial submission"
       }
     ]
+  },
+  {
+    "id": "UBF-20260518-FB6969",
+    "formType": "accountability",
+    "data": {
+      "description": "Accountability: Board exposure visit",
+      "employeeName": "Owen Atuhaire",
+      "date": "2026-05-18",
+      "travelDates": "Board  visit",
+      "department": "Programs",
+      "purpose": "Board exposure visit",
+      "totalBudgeted": "100000.00",
+      "totalActual": "0.00",
+      "advanceReceived": "",
+      "expenses": "[{\"accountCode\":\"\",\"date\":\"2026-04-21\",\"explanation\":\"TRAVEL DAY\",\"refNo\":\"\",\"budgeted\":\"25000\",\"actual\":\"\",\"balance\":\"25000.00\"},{\"accountCode\":\"\",\"date\":\"2026-04-22\",\"explanation\":\"FIELD VISIT IN MASAKA\",\"refNo\":\"\",\"budgeted\":\"25000\",\"actual\":\"\",\"balance\":\"25000.00\"},{\"accountCode\":\"\",\"date\":\"2026-04-23\",\"explanation\":\"FIELD VIST IN SEMBABULE\",\"refNo\":\"\",\"budgeted\":\"25000\",\"actual\":\"\",\"balance\":\"25000.00\"},{\"accountCode\":\"\",\"date\":\"2026-04-24\",\"explanation\":\"TRAVEL BACK DAY\",\"refNo\":\"\",\"budgeted\":\"25000\",\"actual\":\"\",\"balance\":\"25000.00\"}]"
+    },
+    "submittedBy": "o.atuhaire@ugandabiodiversityfund.org",
+    "submittedByName": "Owen Atuhaire",
+    "submittedByTitle": "Staff",
+    "submittedByRole": "Staff",
+    "status": "Pending",
+    "attachments": [],
+    "comments": [],
+    "createdAt": "2026-05-18T08:52:23.944Z",
+    "updatedAt": "2026-05-18T08:52:23.944Z",
+    "approval": {
+      "preparation": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "o.atuhaire@ugandabiodiversityfund.org",
+        "byName": "Owen Atuhaire",
+        "byTitle": "Staff",
+        "at": "2026-05-18T08:52:23.944Z",
+        "note": "Initial submission"
+      }
+    ]
   }
 ]
