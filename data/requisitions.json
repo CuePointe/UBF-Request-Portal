@@ -239,17 +239,17 @@
     "submittedByName": "Owen Atuhaire",
     "submittedByTitle": "Staff",
     "submittedByRole": "Staff",
-    "status": "Pending",
+    "status": "Prepared",
     "attachments": [],
     "comments": [],
     "createdAt": "2026-05-18T08:52:23.944Z",
-    "updatedAt": "2026-05-18T08:52:23.944Z",
+    "updatedAt": "2026-05-18T14:19:41.959Z",
     "approval": {
       "preparation": {
-        "status": "Pending",
-        "by": "",
-        "byName": "",
-        "at": "",
+        "status": "Prepared",
+        "by": "s.abonyo@ugandabiodiversityfund.org",
+        "byName": "Susan Abonyo",
+        "at": "2026-05-18T14:19:41.959Z",
         "note": ""
       },
       "review": {
@@ -282,6 +282,14 @@
         "byTitle": "Staff",
         "at": "2026-05-18T08:52:23.944Z",
         "note": "Initial submission"
+      },
+      {
+        "action": "Prepared",
+        "by": "s.abonyo@ugandabiodiversityfund.org",
+        "byName": "Susan Abonyo",
+        "byTitle": "Administration Officer",
+        "at": "2026-05-18T14:19:41.959Z",
+        "note": ""
       }
     ]
   },
