@@ -54,9 +54,9 @@
     "name": "Owen Atuhaire",
     "role": "Staff",
     "title": "Staff",
-    "passwordHash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
-    "passwordExpiry": "2026-12-31",
-    "mustChangePassword": true,
+    "passwordHash": "3fdb000c0a75c1fbe8d08f0d7659e088dab7bfa24aac257f860ae41e2f78dfa5",
+    "passwordExpiry": "2026-08-16",
+    "mustChangePassword": false,
     "active": true
   },
   {
