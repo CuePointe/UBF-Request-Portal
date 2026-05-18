@@ -84,5 +84,73 @@
         "note": ""
       }
     ]
+  },
+  {
+    "id": "UBF-20260518-2DC9F2",
+    "formType": "lpo",
+    "data": {
+      "description": "LPO: Limsu",
+      "lpoDate": "2026-05-18",
+      "vendorName": "Limsu",
+      "vendorAddress": "Nasser Road",
+      "accountCode": "ubfio",
+      "vendorNo": "plot 014",
+      "validity": "30",
+      "deliverAt": "Zzimwe Rd",
+      "paymentTerms": "30",
+      "subtotal": "3750000.00",
+      "vat": "675000.00",
+      "total": "4425000.00",
+      "items": "[{\"description\":\"tonner yellow\",\"qty\":\"10\",\"unit\":\"10\",\"unitPrice\":\"250000\",\"total\":\"2500000.00\"},{\"description\":\"tonner black\",\"qty\":\"5\",\"unit\":\"5\",\"unitPrice\":\"250000\",\"total\":\"1250000.00\"}]"
+    },
+    "submittedBy": "s.abonyo@ugandabiodiversityfund.org",
+    "submittedByName": "Susan Abonyo",
+    "submittedByTitle": "Administration Officer",
+    "submittedByRole": "Admin Officer",
+    "status": "Pending",
+    "attachments": [],
+    "comments": [],
+    "createdAt": "2026-05-18T08:00:51.099Z",
+    "updatedAt": "2026-05-18T08:00:51.099Z",
+    "approval": {
+      "preparation": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "s.abonyo@ugandabiodiversityfund.org",
+        "byName": "Susan Abonyo",
+        "byTitle": "Administration Officer",
+        "at": "2026-05-18T08:00:51.099Z",
+        "note": "Initial submission"
+      }
+    ]
   }
 ]
