@@ -152,5 +152,72 @@
         "note": "Initial submission"
       }
     ]
+  },
+  {
+    "id": "UBF-20260518-90A335",
+    "formType": "travel",
+    "data": {
+      "description": "Travel Plan: Corridor restoration Field monitoring",
+      "travellerName": "Owen Atuhaire",
+      "position": "Staff",
+      "requestDate": "2026-05-18",
+      "staffNumber": "34",
+      "departureDate": "2026-05-19",
+      "returnDate": "2026-05-21",
+      "totalDays": "3",
+      "businessNights": "3",
+      "businessReason": "Corridor restoration Field monitoring",
+      "grandTotal": "285000.00",
+      "routes": "[{\"route\":\"Travel to Hoima\",\"date\":\"2026-05-18\",\"perDiem\":\"\",\"accommodation\":\"70000\",\"sda\":\"\",\"others\":\"\",\"total\":\"70000.00\"},{\"route\":\"Field work in Hoima\",\"date\":\"2026-05-19\",\"perDiem\":\"\",\"accommodation\":\"80000\",\"sda\":\"\",\"others\":\"\",\"total\":\"80000.00\"},{\"route\":\"Field work in Masindi\",\"date\":\"2026-05-20\",\"perDiem\":\"\",\"accommodation\":\"80000\",\"sda\":\"\",\"others\":\"\",\"total\":\"80000.00\"},{\"route\":\"Travel back to Kampala\",\"date\":\"2026-05-21\",\"perDiem\":\"\",\"accommodation\":\"55000\",\"sda\":\"\",\"others\":\"\",\"total\":\"55000.00\"}]"
+    },
+    "submittedBy": "o.atuhaire@ugandabiodiversityfund.org",
+    "submittedByName": "Owen Atuhaire",
+    "submittedByTitle": "Staff",
+    "submittedByRole": "Staff",
+    "status": "Pending",
+    "attachments": [],
+    "comments": [],
+    "createdAt": "2026-05-18T08:48:15.502Z",
+    "updatedAt": "2026-05-18T08:48:15.502Z",
+    "approval": {
+      "preparation": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "o.atuhaire@ugandabiodiversityfund.org",
+        "byName": "Owen Atuhaire",
+        "byTitle": "Staff",
+        "at": "2026-05-18T08:48:15.502Z",
+        "note": "Initial submission"
+      }
+    ]
   }
 ]
