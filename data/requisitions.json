@@ -284,5 +284,73 @@
         "note": "Initial submission"
       }
     ]
+  },
+  {
+    "id": "UBF-20260518-3B6907",
+    "formType": "request",
+    "data": {
+      "activityCode": "TEPU_OO43",
+      "description": "PPE",
+      "specification": "PROTECTIVE GEAR",
+      "quantity": "8",
+      "dateRequired": "2026-05-18",
+      "locationOfWork": "Kampala",
+      "contractPeriod": "2 weeks",
+      "accountCode": "EACOP",
+      "accountName": "SF",
+      "donorCode": "",
+      "donorName": "444",
+      "department": "Programmes",
+      "budgetCode": "2002"
+    },
+    "submittedBy": "o.atuhaire@ugandabiodiversityfund.org",
+    "submittedByName": "Owen Atuhaire",
+    "submittedByTitle": "Staff",
+    "submittedByRole": "Staff",
+    "status": "Pending",
+    "attachments": [],
+    "comments": [],
+    "createdAt": "2026-05-18T08:55:14.512Z",
+    "updatedAt": "2026-05-18T08:55:14.512Z",
+    "approval": {
+      "preparation": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "o.atuhaire@ugandabiodiversityfund.org",
+        "byName": "Owen Atuhaire",
+        "byTitle": "Staff",
+        "at": "2026-05-18T08:55:14.512Z",
+        "note": "Initial submission"
+      }
+    ]
   }
 ]
