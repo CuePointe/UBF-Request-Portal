@@ -433,11 +433,39 @@
         "name": "WhatsApp Image 2026-05-06 at 4.59.31 PM.jpeg",
         "size": 81777,
         "uploadedAt": "2026-05-19T03:38:06.477Z"
+      },
+      {
+        "path": "attachments/1779162407831_Evaluation_Report.docx",
+        "downloadUrl": "https://github.com/CuePointe/UBF-Request-Portal/blob/main/attachments/1779162407831_Evaluation_Report.docx",
+        "name": "Evaluation Report.docx",
+        "size": 25585,
+        "uploadedAt": "2026-05-19T03:46:49.156Z"
+      },
+      {
+        "path": "attachments/1779162409166_Goods_Recieved_Note.pdf",
+        "downloadUrl": "https://github.com/CuePointe/UBF-Request-Portal/blob/main/attachments/1779162409166_Goods_Recieved_Note.pdf",
+        "name": "Goods Recieved Note.pdf",
+        "size": 655162,
+        "uploadedAt": "2026-05-19T03:46:51.288Z"
+      },
+      {
+        "path": "attachments/1779162411292_Invoice___Payment_voucher.xlsx",
+        "downloadUrl": "https://github.com/CuePointe/UBF-Request-Portal/blob/main/attachments/1779162411292_Invoice___Payment_voucher.xlsx",
+        "name": "Invoice & Payment voucher.xlsx",
+        "size": 68839,
+        "uploadedAt": "2026-05-19T03:46:52.585Z"
+      },
+      {
+        "path": "attachments/1779162412601_LPO.pdf",
+        "downloadUrl": "https://github.com/CuePointe/UBF-Request-Portal/blob/main/attachments/1779162412601_LPO.pdf",
+        "name": "LPO.pdf",
+        "size": 621329,
+        "uploadedAt": "2026-05-19T03:46:54.315Z"
       }
     ],
     "comments": [],
     "createdAt": "2026-05-19T03:38:06.477Z",
-    "updatedAt": "2026-05-19T03:38:06.477Z",
+    "updatedAt": "2026-05-19T03:46:54.315Z",
     "approval": {
       "preparation": {
         "status": "Pending",
@@ -476,6 +504,14 @@
         "byTitle": "Staff",
         "at": "2026-05-19T03:38:06.477Z",
         "note": "Initial submission"
+      },
+      {
+        "action": "Attachment Added",
+        "by": "s.abonyo@ugandabiodiversityfund.org",
+        "byName": "Susan Abonyo",
+        "byTitle": "Administration Officer",
+        "at": "2026-05-19T03:46:54.315Z",
+        "note": "4 file(s) attached"
       }
     ]
   }
