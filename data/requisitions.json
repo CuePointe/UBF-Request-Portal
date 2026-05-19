@@ -463,9 +463,19 @@
         "uploadedAt": "2026-05-19T03:46:54.315Z"
       }
     ],
-    "comments": [],
+    "comments": [
+      {
+        "id": "CMT-1779162457570",
+        "by": "s.abonyo@ugandabiodiversityfund.org",
+        "byName": "Susan Abonyo",
+        "byRole": "Admin Officer",
+        "text": "Pls support with these docs",
+        "at": "2026-05-19T03:47:37.570Z",
+        "replies": []
+      }
+    ],
     "createdAt": "2026-05-19T03:38:06.477Z",
-    "updatedAt": "2026-05-19T03:46:54.315Z",
+    "updatedAt": "2026-05-19T03:47:37.570Z",
     "approval": {
       "preparation": {
         "status": "Pending",
