@@ -376,5 +376,81 @@
         "note": ""
       }
     ]
+  },
+  {
+    "id": "UBF-20260519-BC22C7",
+    "formType": "request",
+    "data": {
+      "activityCode": "UBF012",
+      "description": "Online App",
+      "specification": "ubf procurement and logistics portal",
+      "quantity": "1",
+      "dateRequired": "2026-06-01",
+      "locationOfWork": "Office",
+      "contractPeriod": "Indefinate",
+      "accountCode": "#05",
+      "accountName": "UBFOI",
+      "donorCode": "#03",
+      "donorName": "IGF",
+      "department": "Administration",
+      "budgetCode": "BUD-2026-Q3"
+    },
+    "submittedBy": "t.otieno@ugandabiodiversityfund.org",
+    "submittedByName": "Thomas Otieno",
+    "submittedByTitle": "Staff",
+    "submittedByRole": "Staff",
+    "status": "Pending",
+    "attachments": [
+      {
+        "path": "attachments/1779161884865_WhatsApp_Image_2026-05-06_at_4.59.31_PM.jpeg",
+        "downloadUrl": "https://github.com/CuePointe/UBF-Request-Portal/blob/main/attachments/1779161884865_WhatsApp_Image_2026-05-06_at_4.59.31_PM.jpeg",
+        "name": "WhatsApp Image 2026-05-06 at 4.59.31 PM.jpeg",
+        "size": 81777,
+        "uploadedAt": "2026-05-19T03:38:06.477Z"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-05-19T03:38:06.477Z",
+    "updatedAt": "2026-05-19T03:38:06.477Z",
+    "approval": {
+      "preparation": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "review": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "clearance": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      },
+      "approval": {
+        "status": "Pending",
+        "by": "",
+        "byName": "",
+        "at": "",
+        "note": ""
+      }
+    },
+    "history": [
+      {
+        "action": "Submitted",
+        "by": "t.otieno@ugandabiodiversityfund.org",
+        "byName": "Thomas Otieno",
+        "byTitle": "Staff",
+        "at": "2026-05-19T03:38:06.477Z",
+        "note": "Initial submission"
+      }
+    ]
   }
 ]
